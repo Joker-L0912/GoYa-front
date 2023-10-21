@@ -40,7 +40,7 @@ interface AxiosOptions<T> {
 }
 instance.interceptors.request.use(requestHandler)
 
-instance.interceptors.response.use(responseHandler, errorHandler)
+// instance.interceptors.response.use(responseHandler, errorHandler)
 
 export default instance
 const instancePromise = <R = any, T = any>(options: AxiosOptions<T> & RequestConfigExtra): Promise<ResponseBody<R>> => {
