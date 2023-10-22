@@ -17,11 +17,15 @@ interface IssueItem {
   'handledBy': string
 }
 
-export const getIssueList = async (params: any): Promise<ResponseBody<IssueItem[]>> => {
+export const getIssueList = async(params: any): Promise<ResponseBody<IssueItem[]>> => {
   return useGet('/system/issue', params)
 }
-export const getIssueCount = async (): Promise<ResponseBody<number>> => {
+export const getIssueCount = async(): Promise<ResponseBody<number>> => {
   return useGet<number>('/system/issue/count')
+}
+
+export const getIssueDetail = async(name: string) => {
+  return useGet<any>(`/system/issue/${name}`)
 }
 
 export type { IssueItem }

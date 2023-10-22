@@ -30,9 +30,9 @@ const routes: RouteRecordRaw[] = [
             meta: { title: 'dashboard' },
           },
           {
-            path: 'test1-3',
-            component: () => import('@/views/Issue/test1-3.vue'),
-            meta: { title: '二级菜单1-3' },
+            path: ':name',
+            component: () => import('@/views/Issue/detail.vue'),
+            meta: { title: 'detail' },
           },
         ],
       },

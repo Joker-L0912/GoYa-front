@@ -15,12 +15,11 @@ const itemList = ref([ // 水平一级菜单栏的菜单
   },
   {
     name: 'test',
-    path: '/issue/test',
+    path: '/issue/detail',
     title: '测试3',
   },
 ])
 </script>
-
 <template>
   <v-navigation-drawer width='200'>
     <v-list :lines='false'

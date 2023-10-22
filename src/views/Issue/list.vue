@@ -5,13 +5,13 @@ import { computed, onMounted, ref } from 'vue'
 import { getIssueCount, getIssueList } from '@/api/issue/list'
 import type { IssueItem } from '@/api/issue/list'
 
-const pageSize = ref<number>(10)
+const pageSize = ref<number>(20)
 const pageNum = ref(1)
 const issueList: Ref<IssueItem[] | undefined> = ref()
 const loading = ref(false)
 const total: Ref<number> = ref(0)
 // 请求问题
-onMounted(async () => {
+onMounted(async() => {
   const { data } = await getIssueList({
     pageNum: pageNum.value,
     pageSize: pageSize.value,
@@ -19,7 +19,7 @@ onMounted(async () => {
   issueList.value = data
 })
 // 获取数量
-onMounted(async () => {
+onMounted(async() => {
   const { data } = await getIssueCount()
   if (data != null)
     total.value = data
@@ -63,14 +63,14 @@ const headers = ref([
     title: '创建人',
     value: 'createdBy',
   }])
-
-const updatePage = async () => {
+const updatePage = async() => {
+  issueList.value = []
   if (loading.value === true) return
   loading.value = true
   await getIssueList({
     pageNum: pageNum.value,
     pageSize: pageSize.value,
-  }).then((res) => {
+  }).then(res => {
     issueList.value = res.data
   }).finally(() => {
     loading.value = false
@@ -80,7 +80,7 @@ const updatePage = async () => {
 
 <template>
   <div>
-    <v-card>
+    <v-card class='issue-card overflow-y-auto'>
       <v-data-table :items='issueList'
                     :headers='headers'
                     density='comfortable'
@@ -88,6 +88,7 @@ const updatePage = async () => {
                     :page='pageNum'
                     :show-current-page='true'
                     :total-items='total'
+                    :hover='true'
                     :loading='loading'>
         <template #bottom>
           <div class='text-center pt-2'>
@@ -104,5 +105,7 @@ const updatePage = async () => {
 </template>
 
 <style scoped>
-
+.issue-card{
+  max-height: calc(100vh - 64px);
+}
 </style>
