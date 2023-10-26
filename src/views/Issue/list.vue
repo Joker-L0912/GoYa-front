@@ -104,7 +104,7 @@ const updatePage = async() => {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang='less'>
 .issue-card{
   max-height: calc(100vh - 64px);
 }
