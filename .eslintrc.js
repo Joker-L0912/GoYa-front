@@ -5,9 +5,11 @@ module.exports = {
   },
   extends: [
     'plugin:vue/vue3-strongly-recommended',
+    // 'eslint-config-ali/typescript/vue',
     'plugin:@typescript-eslint/recommended',
   ],
   rules: {
+    'no-param-reassign': ['error', { props: false }],
     // 代码风格
     'block-spacing': [2, 'always'],
     'brace-style': [2, '1tbs', {
@@ -38,9 +40,9 @@ module.exports = {
       defaultAssignment: false,
     }],
     quotes: [2, 'single'],
-    semi: ['error', 'never'],
+    // semi: ['error', 'never'],
     'space-before-blocks': [2, 'always'],
-    'space-before-function-paren': [2, 'never'],
+    '@typescript-eslint/space-before-function-paren': [2, 'never'],
     'space-in-parens': [2, 'never'],
     'space-infix-ops': 2,
     'space-unary-ops': [2, {
@@ -106,7 +108,7 @@ module.exports = {
     'vue',
     '@typescript-eslint',
   ],
-}
+};
 
 // module.exports = {
 //   overrides: [

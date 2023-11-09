@@ -1,12 +1,20 @@
-import { URL, fileURLToPath } from 'node:url'
-import vue from '@vitejs/plugin-vue'
-import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
-import env from '@vitejs/plugin-vue'
-import type { ConfigEnv, UserConfig } from 'vite'
-import { loadEnv } from 'vite'
+import { URL, fileURLToPath } from 'node:url';
+import vue from '@vitejs/plugin-vue';
+import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
+import type { ConfigEnv, UserConfig } from 'vite';
+import { loadEnv } from 'vite';
 
 // https://vitejs.dev/config/
 export default ({ mode }: ConfigEnv): UserConfig => {
+  const env = loadEnv(mode, process.cwd());
+  const proxyObj = {};
+  if (mode === 'development' && env.VITE_APP_BASE_API_DEV && env.VITE_APP_BASE_URL_DEV) {
+    proxyObj[env.VITE_APP_BASE_API_DEV] = {
+      target: env.VITE_APP_BASE_URL_DEV,
+      changeOrigin: true,
+      rewrite: path => path.replace(new RegExp(`^${env.VITE_APP_BASE_API_DEV}`), ''),
+    };
+  }
   return {
     plugins: [
       vue({
@@ -14,11 +22,9 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       }),
       // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
       vuetify({
-        autoImport: true,
       }),
       // env(),
     ],
-    // define: { 'process.env': {} },
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
@@ -36,12 +42,13 @@ export default ({ mode }: ConfigEnv): UserConfig => {
     server: {
       port: 6678,
       proxy: {
-        '/api': {
-          target: 'http://127.0.0.1:8888/',
+        ...proxyObj,
+        [env.VITE_APP_BASE_API]: {
+          target: env.VITE_APP_BASE_URL,
           changeOrigin: true,
-          rewrite: path => path.replace(/api/, ''),
+          rewrite: path => path.replace(new RegExp(`^${env.VITE_APP_BASE_API}`), ''),
         },
       },
     },
-  }
-}
+  };
+};

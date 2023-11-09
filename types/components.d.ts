@@ -2,6 +2,6 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    // Header: typeof import('@/components/index.vue')['default']
+    // Header: typeof import('@/components/Login.vue')['default']
   }
 }

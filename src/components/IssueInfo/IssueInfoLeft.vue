@@ -1,15 +1,15 @@
 <script setup
         lang="ts">
-import { ref } from 'vue'
+import { ref } from 'vue';
 
 const param = defineProps({
   issueInfo: {
     type: Object,
     default: null,
   },
-})
-const issueInfo = ref(param.issueInfo)
-const tab = ref('')
+});
+const issueInfo = ref(param.issueInfo);
+const tab = ref('');
 </script>
 
 <template>

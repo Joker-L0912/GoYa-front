@@ -1,31 +1,30 @@
 <script setup
         lang='ts'>
-import type { Ref } from 'vue'
-import { computed, onMounted, ref } from 'vue'
-import { getIssueCount, getIssueList } from '@/api/issue/list'
-import type { IssueItem } from '@/api/issue/list'
+import type { Ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+import { getIssueCount, getIssueList } from '@/api/issue/list';
+import type { IssueItem } from '@/api/issue/list';
 
-const pageSize = ref<number>(20)
-const pageNum = ref(1)
-const issueList: Ref<IssueItem[] | undefined> = ref()
-const loading = ref(false)
-const total: Ref<number> = ref(0)
+const pageSize = ref<number>(20);
+const pageNum = ref(1);
+const issueList: Ref<IssueItem[] | undefined> = ref();
+const loading = ref(false);
+const total: Ref<number> = ref(0);
 // 请求问题
 onMounted(async() => {
   const { data } = await getIssueList({
     pageNum: pageNum.value,
     pageSize: pageSize.value,
-  })
-  issueList.value = data
-})
+  });
+  issueList.value = data;
+});
 // 获取数量
 onMounted(async() => {
-  const { data } = await getIssueCount()
-  if (data != null)
-    total.value = data
-})
+  const { data } = await getIssueCount();
+  if (data != null) total.value = data;
+});
 
-const pageCount = computed(() => { return Math.ceil(total.value / pageSize.value) })
+const pageCount = computed(() => { return Math.ceil(total.value / pageSize.value); });
 const headers = ref([
   {
     title: 'ID',
@@ -62,20 +61,20 @@ const headers = ref([
   }, {
     title: '创建人',
     value: 'createdBy',
-  }])
+  }]);
 const updatePage = async() => {
-  issueList.value = []
-  if (loading.value === true) return
-  loading.value = true
+  issueList.value = [];
+  if (loading.value === true) return;
+  loading.value = true;
   await getIssueList({
     pageNum: pageNum.value,
     pageSize: pageSize.value,
   }).then(res => {
-    issueList.value = res.data
+    issueList.value = res.data;
   }).finally(() => {
-    loading.value = false
-  })
-}
+    loading.value = false;
+  });
+};
 </script>
 
 <template>
