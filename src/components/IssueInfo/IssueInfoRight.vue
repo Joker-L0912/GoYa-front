@@ -3,6 +3,14 @@
 
 import { ref } from 'vue'
 
+const param = defineProps({
+  issueInfo: {
+    type: Object,
+    default: null,
+  },
+});
+const issueInfo = ref(param.issueInfo);
+
 const isAttention = ref<boolean>(true)
 const islike = ref<boolean>(true)
 const changAttention = () => {
@@ -28,8 +36,7 @@ const changeLike = () => {
     <v-sheet class='ma-2 pa-2 icon-container'>
       <v-icon icon='mdi-share-variant-outline' />
     </v-sheet>
-    <v-sheet class='ma-2 pa-2 icon-container'
-             :onclick='changeLike'>
+    <v-sheet class='ma-2 pa-2 icon-container'>
       <v-menu location='bottom'>
         <template #activator='{ props }'>
           <div v-bind='props'
@@ -43,16 +50,57 @@ const changeLike = () => {
             </div>
           </div>
         </template>
-        <v-list :nav='true'>
-          <v-list-item>
-            <v-list-item-title>aaa</v-list-item-title>
-            <v-list-item-title>aaa</v-list-item-title>
-            <v-list-item-title>aaa</v-list-item-title>
-            <v-list-item-title>aaa</v-list-item-title>
-          </v-list-item>
-        </v-list>
+        <v-card min-width='300'>
+          <v-list :nav='true'>
+            <v-list-item v-for='(item, index) in [1,2,3]'
+                         :key='index'
+                         :value='index'>
+              <v-list-item-title>{{ item }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+          <v-divider />
+        </v-card>
       </v-menu>
     </v-sheet>
+  </div>
+  <div class='d-flex mb-6'>
+    <v-btn :elevation='0'
+           class='status-btn'
+           append-icon='mdi-chevron-down'
+           text='asasdasdasdda'>
+      {{ issueInfo.issueStatus }}
+    </v-btn>
+  </div>
+  <div class='mb-6'>
+    <v-card>
+      <v-expansion-panels>
+        <v-expansion-panel>
+          <v-expansion-panel-title>详细信息</v-expansion-panel-title>
+          <v-expansion-panel-text>
+            <v-card :elevation='0'>
+              <v-sheet class='d-flex py-3'>
+                <div class='mr-16'>经办人</div>
+                <div class='pl-6'>{{ issueInfo.handledBy }}</div>
+              </v-sheet>
+              <v-sheet class='d-flex py-3'>
+                <div class='mr-16'>报告人</div>
+                <div class='pl-6'>{{ issueInfo.reportedBy }}</div>
+              </v-sheet>
+              <v-sheet class='d-flex py-3'>
+                <div class='mr-16'>标签</div>
+                <div class='pl-6'>无</div>
+              </v-sheet>
+              <v-sheet class='d-flex py-3'>
+                <div class='mr-16'>优先级</div>
+                <div class='pl-6'>{{ issueInfo.issuePriority }}</div>
+              </v-sheet>
+            </v-card>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
+        <v-expansion-panel title='更多字段'
+                           text='' />
+      </v-expansion-panels>
+    </v-card>
   </div>
 </template>
 
@@ -63,5 +111,11 @@ const changeLike = () => {
 
 .icon-action {
   color: #0C66E4;
+}
+.status-btn{
+  background-color: #F1F2F4;
+}
+.status-btn:hover{
+  background-color: #DCDFE4;
 }
 </style>

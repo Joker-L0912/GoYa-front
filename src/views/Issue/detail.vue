@@ -91,7 +91,7 @@ let issueDetail = ref({
     </v-col>
     <v-col class='v-col-4'>
       <v-card class='detail-card'>
-        <IssueInfoRight />
+        <IssueInfoRight :issue-info='issueDetail' />
       </v-card>
     </v-col>
   </v-row>
