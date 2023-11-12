@@ -79,19 +79,19 @@ const changeLike = () => {
           <v-expansion-panel-text>
             <v-card :elevation='0'>
               <v-sheet class='d-flex py-3'>
-                <div class='mr-16'>经办人</div>
+                <div class='w-25'>经办人</div>
                 <div class='pl-6'>{{ issueInfo.handledBy }}</div>
               </v-sheet>
               <v-sheet class='d-flex py-3'>
-                <div class='mr-16'>报告人</div>
+                <div class='w-25'>报告人</div>
                 <div class='pl-6'>{{ issueInfo.reportedBy }}</div>
               </v-sheet>
               <v-sheet class='d-flex py-3'>
-                <div class='mr-16'>标签</div>
+                <div class='w-25'>标签</div>
                 <div class='pl-6'>无</div>
               </v-sheet>
               <v-sheet class='d-flex py-3'>
-                <div class='mr-16'>优先级</div>
+                <div class='w-25'>优先级</div>
                 <div class='pl-6'>{{ issueInfo.issuePriority }}</div>
               </v-sheet>
             </v-card>
