@@ -13,6 +13,7 @@ const issueInfo = ref(param.issueInfo);
 
 const isAttention = ref<boolean>(true)
 const islike = ref<boolean>(true)
+const panel = ref<string[]>([])
 const changAttention = () => {
   isAttention.value = !isAttention.value
 }
@@ -66,15 +67,15 @@ const changeLike = () => {
   <div class='d-flex mb-6'>
     <v-btn :elevation='0'
            class='status-btn'
-           append-icon='mdi-chevron-down'
-           text='asasdasdasdda'>
+           append-icon='mdi-chevron-down'>
       {{ issueInfo.issueStatus }}
     </v-btn>
   </div>
   <div class='mb-6'>
     <v-card>
-      <v-expansion-panels>
-        <v-expansion-panel>
+      <v-expansion-panels variant='accordion'
+                          :multiple='true'>
+        <v-expansion-panel value='default-info'>
           <v-expansion-panel-title>详细信息</v-expansion-panel-title>
           <v-expansion-panel-text>
             <v-card :elevation='0'>
@@ -98,7 +99,8 @@ const changeLike = () => {
           </v-expansion-panel-text>
         </v-expansion-panel>
         <v-expansion-panel title='更多字段'
-                           text='' />
+                           text=''
+                           value='custom-info' />
       </v-expansion-panels>
     </v-card>
   </div>
@@ -113,7 +115,7 @@ const changeLike = () => {
   color: #0C66E4;
 }
 .status-btn{
-  background-color: #F1F2F4;
+  background-color: #E4E4E4;
 }
 .status-btn:hover{
   background-color: #DCDFE4;
