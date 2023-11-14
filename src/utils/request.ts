@@ -37,9 +37,9 @@ const requestHandler = async(config: InternalAxiosRequestConfig & RequestConfigE
   return config;
 };
 
-// const responseHandler = (response: any): ApiResponseData<any> | AxiosResponse<any> | Promise<any> | any => {
-//   return response.data;
-// };
+const responseHandler = (response: any): ApiResponseData<any> | AxiosResponse<any> | Promise<any> | any => {
+  return response.data;
+};
 //
 // const errorHandler = (error: AxiosError): Promise<any> => {
 //   if (error.response) {
@@ -48,7 +48,7 @@ const requestHandler = async(config: InternalAxiosRequestConfig & RequestConfigE
 //   return Promise.reject(error);
 // };
 instance.interceptors.request.use(requestHandler);
-// instance.interceptors.response.use(responseHandler);
+instance.interceptors.response.use(responseHandler);
 export default instance;
 const instancePromise = async <R = any, T = any>(options: AxiosOptions<T> & RequestConfigExtra): Promise<ApiResponseData<R>> => {
   const { loading } = options;

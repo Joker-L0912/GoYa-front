@@ -1,4 +1,3 @@
-import type { ApiResponseData } from '@/utils/request';
 import { useGet } from '@/utils/request';
 
 interface IssueItem {
@@ -18,14 +17,14 @@ interface IssueItem {
 }
 
 export const getIssueList = async(params: any): Promise<ApiResponseData<IssueItem[]>> => {
-  return useGet('/system/issue', params);
+  return useGet('/issue/issue', params);
 };
 export const getIssueCount = async(): Promise<ApiResponseData<number>> => {
-  return useGet<number>('/system/issue/count');
+  return useGet<number>('/issue/issue/count');
 };
 
 export const getIssueDetail = async(name: string) => {
-  return useGet<any>(`/system/issue/${name}`);
+  return useGet<any>(`/issue/issue/${name}`);
 };
 
 export type { IssueItem };

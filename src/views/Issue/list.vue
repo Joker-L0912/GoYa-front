@@ -12,16 +12,16 @@ const loading = ref(false);
 const total: Ref<number> = ref(0);
 // 请求问题
 onMounted(async() => {
-  const { data } = await getIssueList({
+  const  data  = await getIssueList({
     pageNum: pageNum.value,
     pageSize: pageSize.value,
   });
-  issueList.value = data;
+  issueList.value = data.data;
 });
 // 获取数量
 onMounted(async() => {
-  const { data } = await getIssueCount();
-  if (data != null) total.value = data;
+  const  data  = await getIssueCount();
+  if (data != null) total.value = data.data;
 });
 
 const pageCount = computed(() => { return Math.ceil(total.value / pageSize.value); });
