@@ -36,29 +36,6 @@ const routes: RouteRecordRaw[] = [
           },
         ],
       },
-      {
-        path: '/test',
-        component: () => import('@/views/test/index.vue'),
-        meta: { title: '一级菜单1' },
-        redirect: '/issue/test1-1', // 该配置是若点击选择一级菜单时，默认选中并跳转到该一级菜单下的第一个二级菜单
-        children: [
-          {
-            path: 'list',
-            component: () => import('@/views/test/list.vue'),
-            meta: { title: '二级菜单1-1' },
-          },
-          {
-            path: 'test1-2',
-            component: () => import('@/views/test/test2-2.vue'),
-            meta: { title: '二级菜单1-2' },
-          },
-          {
-            path: 'test1-3',
-            component: () => import('@/views/test/test2-3.vue'),
-            meta: { title: '二级菜单1-3' },
-          },
-        ],
-      },
     ],
   },
   {
