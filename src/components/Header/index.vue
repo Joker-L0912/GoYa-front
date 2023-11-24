@@ -25,29 +25,16 @@ const tab = ref<string>('toMe')
 
 const items = [
   {
-    prependAvatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-    title: 'Brunch this weekend?',
-    subtitle: '<span class="text-primary">Ali Connors</span> &mdash; I\'ll be in your neighborhood doing errands this weekend. Do you want to hang out?',
+    title: '【子表单】子表单查看变更，字段显示不正确',
+    subtitle: 'SATD-1',
   },
   {
-    prependAvatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-    title: 'Summer BBQ',
-    subtitle: '<span class="text-primary">to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I\'m out of town this weekend.',
+    title: '【子表单】子表单查看变更，字段显示不正确',
+    subtitle: 'SATD-1',
   },
   {
-    prependAvatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-    title: 'Oui oui',
-    subtitle: '<span class="text-primary">Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?',
-  },
-  {
-    prependAvatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg',
-    title: 'Birthday gift',
-    subtitle: '<span class="text-primary">Trevor Hansen</span> &mdash; Have any ideas about what we should get Heidi for her birthday?',
-  },
-  {
-    prependAvatar: 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
-    title: 'Recipe to try',
-    subtitle: '<span class="text-primary">Britta Holt</span> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.',
+    title: '【子表单】子表单查看变更，字段显示不正确',
+    subtitle: 'SATD-1',
   },
 ]
 </script>
@@ -85,39 +72,177 @@ const items = [
                 <v-tab value='toMe'>分配给我</v-tab>
                 <v-tab value='recently'>最近</v-tab>
               </v-tabs>
+              <v-divider />
               <v-window v-model='tab'>
+                <!-- 分配给我-->
                 <v-window-item value='toMe'>
-                  <v-list lines='two'
-                          width='350px'>
+                  <v-list lines='one'
+                          min-width='300px'
+                          max-width='400px'>
                     <v-list-item v-for='item in items'
                                  :key='item.title'
                                  :title='item.title'
-                                 :subtitle='item.subtitle'>
+                                 :subtitle='item.subtitle'
+                                 class='py-3'>
                       <template #prepend>
-                        <v-img src='@/assets/svg/bug.svg'
-                               width='20'
-                               height='20' />
+                        <div class='mr-3'>
+                          <v-img src='@/assets/svg/bug.svg'
+                                 width='20'
+                                 height='20' />
+                        </div>
+                      </template>
+                      <template #title>
+                        <div class='text-md-body-2'>{{ item.title }}</div>
+                      </template>
+                      <template #subtitle='{ subtitle }'>
+                        <div class='text-md-body-2'
+                             v-html='subtitle' />
                       </template>
                     </v-list-item>
-                    <template #subtitle='{ subtitle }'>
-                      <div v-html='subtitle' />
-                    </template>
                   </v-list>
+                  <v-divider />
+                  <v-card-text>总览</v-card-text>
                 </v-window-item>
-                <v-window-item value='recently'>recently</v-window-item>
+                <!-- 最近-->
+                <v-window-item value='recently'>
+                  <v-list lines='one'
+                          min-width='300px'
+                          max-width='400px'>
+                    <v-list-item v-for='item in items'
+                                 :key='item.title'
+                                 :title='item.title'
+                                 :subtitle='item.subtitle'
+                                 class='py-3'>
+                      <template #prepend>
+                        <div class='mr-3'>
+                          <v-img src='@/assets/svg/bug.svg'
+                                 width='20'
+                                 height='20' />
+                        </div>
+                      </template>
+                      <template #title>
+                        <div class='text-md-body-2'>{{ item.title }}</div>
+                      </template>
+                      <template #subtitle='{ subtitle }'>
+                        <div class='text-md-body-2'
+                             v-html='subtitle' />
+                      </template>
+                    </v-list-item>
+                  </v-list>
+                  <v-divider />
+                  <v-card-text>总览</v-card-text>
+                </v-window-item>
               </v-window>
             </v-card>
           </v-menu>
         </div>
-        <v-btn class='bg-white'>创建</v-btn>
+        <!--  项目 -->
+        <div class='menu-container'>
+          <v-menu :close-on-content-click='false'>
+            <template #activator='{ props }'>
+              <v-btn v-bind='props'
+                     class='text-button px-2'>
+                <div class='d-flex justify-center align-center'>
+                  <div class='h-100'>项目</div>
+                  <div>
+                    <v-icon icon='mdi-chevron-down'
+                            size='20'
+                            h-100 />
+                  </div>
+                </div>
+              </v-btn>
+            </template>
+            <!-- 项目 内容 -->
+            <v-card>
+              <v-list lines='one'
+                      min-width='300px'
+                      max-width='400px'>
+                <v-list-subheader>最近查看</v-list-subheader>
+                <v-list-item v-for='item in items'
+                             :key='item.title'
+                             :title='item.title'
+                             :subtitle='item.subtitle'
+                             class='py-3'>
+                  <template #prepend>
+                    <div class='mr-3'>
+                      <v-img src='@/assets/svg/bug.svg'
+                             width='20'
+                             height='20' />
+                    </div>
+                  </template>
+                  <template #title>
+                    <div class='text-md-body-2'>{{ item.title }}</div>
+                  </template>
+                  <template #subtitle='{ subtitle }'>
+                    <div class='text-md-body-2'
+                         v-html='subtitle' />
+                  </template>
+                </v-list-item>
+              </v-list>
+              <v-divider />
+              <v-card-text>查看所有项目</v-card-text>
+            </v-card>
+          </v-menu>
+        </div>
+        <!--  筛选器 -->
+        <div class='menu-container'>
+          <v-menu :close-on-content-click='false'>
+            <template #activator='{ props }'>
+              <v-btn v-bind='props'
+                     class='text-button px-2'>
+                <div class='d-flex justify-center align-center'>
+                  <div class='h-100'>筛选器</div>
+                  <div>
+                    <v-icon icon='mdi-chevron-down'
+                            size='20'
+                            h-100 />
+                  </div>
+                </div>
+              </v-btn>
+            </template>
+            <!-- 项目 内容 -->
+            <v-card min-width='200px'>
+              <v-divider />
+              <v-card-text>查看所有筛选器</v-card-text>
+            </v-card>
+          </v-menu>
+        </div>
+        <!--  团队 -->
+        <div class='menu-container'>
+          <v-menu :close-on-content-click='false'>
+            <template #activator='{ props }'>
+              <v-btn v-bind='props'
+                     class='text-button px-2'>
+                <div class='d-flex justify-center align-center'>
+                  <div class='h-100'>团队</div>
+                  <div>
+                    <v-icon icon='mdi-chevron-down'
+                            size='20'
+                            h-100 />
+                  </div>
+                </div>
+              </v-btn>
+            </template>
+            <!-- 项目 内容 -->
+            <v-card min-width='200px'>
+              <v-divider />
+              <v-card-text>邀请人员加入团队</v-card-text>
+              <v-card-text>创建团队</v-card-text>
+              <v-divider />
+              <v-card-text>搜索人员和团队</v-card-text>
+            </v-card>
+          </v-menu>
+        </div>
+        <v-btn class='bg-white mx-1'>创建</v-btn>
       </v-sheet>
     </v-toolbar>
   </v-app-bar>
 </template>
 
 <style scoped
-       lang='less'>
-.menu-container {
-  margin-left: 10px;
-}
+         lang='sass'>
+.menu-container
+  margin-left: 10px
+.v-list-item:hover, .v-card-text:hover
+  background-color: #F5F5F5
 </style>
