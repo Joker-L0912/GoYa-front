@@ -4,12 +4,14 @@ import type { Ref } from 'vue';
 import { computed, onMounted, ref } from 'vue';
 import { getIssueCount, getIssueList } from '@/api/issue/list';
 import type { IssueItem } from '@/api/issue/list';
+import { useRouter } from 'vue-router'
 
-const pageSize = ref<number>(20);
+const pageSize = ref<number>(5);
 const pageNum = ref(1);
 const issueList: Ref<IssueItem[] | undefined> = ref();
 const loading = ref(false);
 const total: Ref<number> = ref(0);
+const route = useRouter()
 // 请求问题
 onMounted(async() => {
   const  data  = await getIssueList({
@@ -27,6 +29,10 @@ onMounted(async() => {
 const pageCount = computed(() => { return Math.ceil(total.value / pageSize.value); });
 const headers = ref([
   {
+    title: '类型',
+    value: 'type',
+    sortable: false,
+  }, {
     title: 'ID',
     value: 'id',
   }, {
@@ -37,9 +43,6 @@ const headers = ref([
     title: '摘要',
     value: 'gist',
     sortable: false,
-  }, {
-    title: '类型',
-    value: 'type',
   }, {
     title: '优先级',
     value: 'issuePriority',
@@ -75,6 +78,9 @@ const updatePage = async() => {
     loading.value = false;
   });
 };
+const toIssueDetail = (name: string) => {
+  route.push(`/issue/${name}`);
+}
 </script>
 
 <template>
@@ -89,6 +95,17 @@ const updatePage = async() => {
                     :total-items='total'
                     :hover='true'
                     :loading='loading'>
+        <template #item.type='{ value }'>
+          <v-img :src='`../src/assets/svg/bug.svg`'
+                 width='17'
+                 :alt='value' />
+        </template>
+        <template #item.name='{ value }'>
+          <div class='link'
+               @click='toIssueDetail(value)'>
+            {{ value }}
+          </div>
+        </template>
         <template #bottom>
           <div class='text-center pt-2'>
             <v-pagination v-model='pageNum'
@@ -106,5 +123,13 @@ const updatePage = async() => {
 <style scoped lang='less'>
 .issue-card{
   max-height: calc(100vh - 64px);
+}
+.link{
+  color: #0c66e4;
+  font-weight: 600;
+}
+
+.link:hover{
+  text-decoration: underline #0c66e4 2px;
 }
 </style>

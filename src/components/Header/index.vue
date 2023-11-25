@@ -1,28 +1,9 @@
 <script setup
         lang='ts'>
-// import { ref } from 'vue'
-
-// const itemList = ref([ // 水平一级菜单栏的菜单
-//   {
-//     name: 'Home',
-//     path: '/Home',
-//     title: '工作',
-//   },
-//   {
-//     name: 'issue',
-//     path: '/issue',
-//     title: '问题',
-//   },
-//   {
-//     name: 'test2',
-//     path: '/test2',
-//     title: '测试',
-//   },
-// ])
-// const menuList = ref<string[]>(['工作', '项目', '筛选器', '仪表盘', '团队', '计划', '应用'])
+import router from '@/router'
 import { ref } from 'vue'
 const tab = ref<string>('toMe')
-
+const workMenuOpen = ref<boolean>(false)
 const items = [
   {
     title: '【子表单】子表单查看变更，字段显示不正确',
@@ -37,6 +18,10 @@ const items = [
     subtitle: 'SATD-1',
   },
 ]
+const changePage = (page: string) => {
+  workMenuOpen.value = false
+  router.push(page)
+}
 </script>
 
 <template>
@@ -51,7 +36,8 @@ const items = [
                height='100'>
         <!-- 工作菜单 -->
         <div class='menu-container'>
-          <v-menu :close-on-content-click='false'>
+          <v-menu v-model='workMenuOpen'
+                  :close-on-content-click='false'>
             <template #activator='{ props }'>
               <v-btn v-bind='props'
                      class='text-button px-2'>
@@ -101,7 +87,6 @@ const items = [
                     </v-list-item>
                   </v-list>
                   <v-divider />
-                  <v-card-text>总览</v-card-text>
                 </v-window-item>
                 <!-- 最近-->
                 <v-window-item value='recently'>
@@ -130,9 +115,11 @@ const items = [
                     </v-list-item>
                   </v-list>
                   <v-divider />
-                  <v-card-text>总览</v-card-text>
                 </v-window-item>
               </v-window>
+              <v-card-text @click='changePage("/issue/list")'>
+                总览
+              </v-card-text>
             </v-card>
           </v-menu>
         </div>
