@@ -3,12 +3,12 @@
 import type { Ref } from 'vue';
 import { computed, onMounted, ref } from 'vue';
 import { getIssueCount, getIssueList } from '@/api/issue/list';
-import type { IssueItem } from '@/api/issue/list';
+import type { IssueListItem } from '@/api/issue/list';
 import { useRouter } from 'vue-router'
 
 const pageSize = ref<number>(5);
 const pageNum = ref(1);
-const issueList: Ref<IssueItem[] | undefined> = ref();
+const issueList: Ref<IssueListItem[] | undefined> = ref();
 const loading = ref(false);
 const total: Ref<number> = ref(0);
 const route = useRouter()
@@ -95,13 +95,13 @@ const toIssueDetail = (name: string) => {
                     :total-items='total'
                     :hover='true'
                     :loading='loading'>
-        <template #item.type='{ value }'>
-          <v-img :src='`../src/assets/svg/bug.svg`'
+        <template #[`item.type`]='{ value }'>
+          <v-img :src='`../src/assets/svg/${value}.svg`'
                  width='17'
                  :alt='value' />
         </template>
-        <template #item.name='{ value }'>
-          <div class='link'
+        <template #[`item.name`]='{ value }'>
+          <div class='link cursor-pointer'
                @click='toIssueDetail(value)'>
             {{ value }}
           </div>

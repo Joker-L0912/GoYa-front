@@ -1,9 +1,20 @@
 <script setup
         lang='ts'>
+import { getIssueList, IssueListItem } from '@/api/issue/list'
 import router from '@/router'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 const tab = ref<string>('toMe')
 const workMenuOpen = ref<boolean>(false)
+const issueList = ref<IssueListItem[]>()
+const pageNum = ref(1);
+const pageSize = ref(3);
+onMounted(async() => {
+  const  data  = await getIssueList({
+    pageNum: pageNum.value,
+    pageSize: pageSize.value,
+  });
+  issueList.value = data.data;
+});
 const items = [
   {
     title: '【子表单】子表单查看变更，字段显示不正确',
@@ -65,11 +76,13 @@ const changePage = (page: string) => {
                   <v-list lines='one'
                           min-width='300px'
                           max-width='400px'>
-                    <v-list-item v-for='item in items'
-                                 :key='item.title'
-                                 :title='item.title'
-                                 :subtitle='item.subtitle'
-                                 class='py-3'>
+                    <v-list-item v-for='item in issueList'
+                                 :key='item.name'
+                                 :title='item.gist'
+                                 :subtitle='item.projectName'
+                                 class='py-3'
+                                 @click='changePage( `/issue/${item.name}`)'
+                                 style='cursor: pointer'>
                       <template #prepend>
                         <div class='mr-3'>
                           <v-img src='@/assets/svg/bug.svg'
@@ -77,8 +90,8 @@ const changePage = (page: string) => {
                                  height='20' />
                         </div>
                       </template>
-                      <template #title>
-                        <div class='text-md-body-2'>{{ item.title }}</div>
+                      <template #title='{ title }'>
+                        <div class='text-md-body-2'>{{ title }}</div>
                       </template>
                       <template #subtitle='{ subtitle }'>
                         <div class='text-md-body-2'

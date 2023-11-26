@@ -89,6 +89,9 @@ module.exports = {
       singleline: 'never',
       multiline: 'never',
     }],
+    'vue/valid-v-slot': ['error', {
+      'allowModifiers': true,
+    }],
     // 支持定义any类型
     '@typescript-eslint/no-explicit-any': ['off'],
     // 'vue/script-indent': [2, 4, {
