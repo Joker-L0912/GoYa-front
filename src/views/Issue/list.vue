@@ -106,6 +106,9 @@ const toIssueDetail = (name: string) => {
             {{ value }}
           </div>
         </template>
+        <template #[`item.gist`]='{ value }'>
+          <v-sheet max-width='600px'>{{ value }}</v-sheet>
+        </template>
         <template #bottom>
           <div class='text-center pt-2'>
             <v-pagination v-model='pageNum'
