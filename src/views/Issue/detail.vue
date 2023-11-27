@@ -8,7 +8,7 @@ import { useRoute } from 'vue-router'
 import { getIssue, Issue } from '@/api/issue/list'
 
 const route = useRoute()
-const name = route.params.name as string
+let name = route.params.name as string
 let issueDetail = ref<Issue>()
 const getIssueDetail = async(name: string) => {
   const { data } = await getIssue(name)
@@ -18,7 +18,8 @@ const getIssueDetail = async(name: string) => {
 onMounted(() => {
   watch(() => route.params.name as string,
       (n, o) => {
-        getIssueDetail(o)
+        getIssueDetail(n)
+        name = n
       })
 })
 onMounted(() => getIssueDetail(name))
