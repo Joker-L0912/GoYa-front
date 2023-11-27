@@ -6,7 +6,7 @@ import { getIssueCount, getIssueList } from '@/api/issue/list';
 import type { IssueListItem } from '@/api/issue/list';
 import { useRouter } from 'vue-router'
 
-const pageSize = ref<number>(5);
+const pageSize = ref<number>(10);
 const pageNum = ref(1);
 const issueList: Ref<IssueListItem[] | undefined> = ref();
 const loading = ref(false);

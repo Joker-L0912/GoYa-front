@@ -1,19 +1,28 @@
 <script setup
-        lang="ts">
+        lang='ts'>
 
 import IssueInfoLeft from '@/components/IssueInfo/IssueInfoLeft.vue'
 import IssueInfoRight from '@/components/IssueInfo/IssueInfoRight.vue'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { getIssue, Issue } from '@/api/issue/list'
+
 const route = useRoute()
 const name = route.params.name as string
 let issueDetail = ref<Issue>()
-onMounted(async() => {
-  const { data }  = await getIssue(name)
-  console.log(data)
+const getIssueDetail = async(name: string) => {
+  const { data } = await getIssue(name)
   issueDetail.value = data
+}
+// 监听器 监听参数变化
+onMounted(() => {
+  watch(() => route.params.name as string,
+      (n, o) => {
+        getIssueDetail(o)
+      })
 })
+onMounted(() => getIssueDetail(name))
+
 </script>
 
 <template>
@@ -30,11 +39,11 @@ onMounted(async() => {
       </v-card>
     </v-col>
   </v-row>
-<!--  </v-container>-->
+  <!--  </v-container>-->
 </template>
 
 <style scoped>
-.detail-card{
+.detail-card {
   min-height: calc(100vh - 64px);
   max-height: calc(100vh - 64px);
   padding: 20px;
