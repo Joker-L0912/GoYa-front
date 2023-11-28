@@ -86,7 +86,7 @@ const updatePage = async() => {
   });
 };
 const toIssueDetail = (name: string) => {
-  router.push(`/issue/${name}`);
+  router.push(`/project/${projectId}/issue/${name}`);
 }
 </script>
 

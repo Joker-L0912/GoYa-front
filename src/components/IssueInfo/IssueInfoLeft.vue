@@ -57,14 +57,6 @@ const tab =   ref('');
         </v-window-item>
       </v-window>
     </v-card>
-
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    {{ issueInfo }}
   </div>
 </template>
 
