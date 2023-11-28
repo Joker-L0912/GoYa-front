@@ -9,20 +9,21 @@ import { getIssue, Issue } from '@/api/issue/list'
 
 const route = useRoute()
 let name = route.params.name as string
+const projectId = route.params.projectId as string
 let issueDetail = ref<Issue>()
-const getIssueDetail = async(name: string) => {
-  const { data } = await getIssue(name)
+const getIssueDetail = async(name: string, projectId: string) => {
+  const { data } = await getIssue(name, { 'projectId': projectId })
   issueDetail.value = data
 }
 // 监听器 监听参数变化
 onMounted(() => {
   watch(() => route.params.name as string,
       (n, o) => {
-        getIssueDetail(n)
+        getIssueDetail(n, projectId)
         name = n
       })
 })
-onMounted(() => getIssueDetail(name))
+onMounted(() => getIssueDetail(name, projectId))
 
 </script>
 

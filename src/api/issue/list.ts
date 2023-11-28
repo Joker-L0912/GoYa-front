@@ -111,10 +111,10 @@ export interface ProjectModule {
 export const getIssueList = async(params: any): Promise<ApiResponseData<IssueListItem[]>> => {
   return useGet<IssueListItem[]>('/issue/issue', params);
 };
-export const getIssueCount = async(): Promise<ApiResponseData<number>> => {
-  return useGet<number>('/issue/issue/count');
+export const getIssueCount = async(params: any): Promise<ApiResponseData<number>> => {
+  return useGet<number>('/issue/issue/count', params);
 };
 
-export const getIssue = async(name: string) => {
-  return useGet<Issue>(`/issue/issue/${name}`);
+export const getIssue = async(name: string, params: any) => {
+  return useGet<Issue>(`/issue/issue/${name}`, params);
 };

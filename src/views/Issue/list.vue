@@ -4,25 +4,31 @@ import type { Ref } from 'vue';
 import { computed, onMounted, ref } from 'vue';
 import { getIssueCount, getIssueList } from '@/api/issue/list';
 import type { IssueListItem } from '@/api/issue/list';
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const pageSize = ref<number>(10);
 const pageNum = ref(1);
 const issueList: Ref<IssueListItem[] | undefined> = ref();
 const loading = ref(false);
 const total: Ref<number> = ref(0);
-const route = useRouter()
+const router = useRouter()
+const route = useRoute()
+const projectId =  route.params.projectId as string
+
 // 请求问题
 onMounted(async() => {
   const  data  = await getIssueList({
     pageNum: pageNum.value,
     pageSize: pageSize.value,
+    projectId,
   });
   issueList.value = data.data;
 });
 // 获取数量
 onMounted(async() => {
-  const  data  = await getIssueCount();
+  const  data  = await getIssueCount({
+    projectId,
+  });
   if (data != null) total.value = data.data;
 });
 
@@ -72,6 +78,7 @@ const updatePage = async() => {
   await getIssueList({
     pageNum: pageNum.value,
     pageSize: pageSize.value,
+    projectId,
   }).then(res => {
     issueList.value = res.data;
   }).finally(() => {
@@ -79,7 +86,7 @@ const updatePage = async() => {
   });
 };
 const toIssueDetail = (name: string) => {
-  route.push(`/issue/${name}`);
+  router.push(`/issue/${name}`);
 }
 </script>
 
@@ -96,7 +103,7 @@ const toIssueDetail = (name: string) => {
                     :hover='true'
                     :loading='loading'>
         <template #[`item.type`]='{ value }'>
-          <v-img :src='`../src/assets/svg/${value}.svg`'
+          <v-img :src='`/src/assets/svg/${value}.svg`'
                  width='17'
                  :alt='value' />
         </template>

@@ -3,15 +3,19 @@
 import { getIssueList, IssueListItem } from '@/api/issue/list'
 import router from '@/router'
 import { onMounted, ref } from 'vue'
+import { useRoute } from 'vue-router'
+const route = useRoute()
 const tab = ref<string>('toMe')
 const workMenuOpen = ref<boolean>(false)
 const issueList = ref<IssueListItem[]>()
 const pageNum = ref(1);
 const pageSize = ref(3);
+const projectId = route.params.projectId as string
 onMounted(async() => {
   const  data  = await getIssueList({
     pageNum: pageNum.value,
     pageSize: pageSize.value,
+    projectId,
   });
   issueList.value = data.data;
 });
@@ -81,7 +85,7 @@ const changePage = (page: string) => {
                                  :title='item.gist'
                                  :subtitle='item.projectName'
                                  class='py-3'
-                                 @click='changePage( `/issue/${item.name}`)'
+                                 @click='changePage( `project/${projectId}/issue/${item.name}`)'
                                  style='cursor: pointer'>
                       <template #prepend>
                         <div class='mr-3'>
@@ -130,7 +134,7 @@ const changePage = (page: string) => {
                   <v-divider />
                 </v-window-item>
               </v-window>
-              <v-card-text @click='changePage("/issue/list")'>
+              <v-card-text @click='changePage(`/project/${projectId}/issue/list`)'>
                 总览
               </v-card-text>
             </v-card>
