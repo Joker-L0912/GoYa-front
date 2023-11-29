@@ -9,6 +9,7 @@ export const useUserStore = defineStore('user', () => {
     const token = ref<string>(getToken() || '')
     const roles = ref<string[]>([])
     const username = ref<string>('')
+    const userSelectProjectId = ref<string>('')
 
     /** 设置角色数组 */
     const setRoles = (value: string[]) => {
@@ -47,7 +48,13 @@ export const useUserStore = defineStore('user', () => {
         token.value = ''
         roles.value = []
     }
-    return { token, roles, username, setRoles, login, getInfo, changeRoles, logout, resetToken }
+    const setProject = (projectId: string) => {
+        userSelectProjectId.value = projectId
+    }
+    const getProject = () => {
+        return userSelectProjectId.value
+    }
+    return { token, roles, username, setRoles, login, getInfo, changeRoles, logout, resetToken, setProject, getProject }
 })
 
 /** 在 setup 外使用 */

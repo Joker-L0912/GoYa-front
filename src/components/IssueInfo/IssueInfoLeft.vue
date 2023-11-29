@@ -1,10 +1,11 @@
 <script setup
         lang="ts">
 import { ref, toRefs } from 'vue'
-
+import { Issue } from '@/api/issue/list'
+import type { PropType } from 'vue'
 const props = defineProps({
   issueInfo: {
-    type: Object,
+    type: Object as PropType<Issue>,
     default: null,
   },
 });

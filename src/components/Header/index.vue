@@ -85,7 +85,7 @@ const changePage = (page: string) => {
                                  :title='item.gist'
                                  :subtitle='item.projectName'
                                  class='py-3'
-                                 @click='changePage( `project/${projectId}/issue/${item.name}`)'
+                                 @click='changePage( `/project/${projectId}/issue/${item.name}`)'
                                  style='cursor: pointer'>
                       <template #prepend>
                         <div class='mr-3'>
@@ -184,7 +184,7 @@ const changePage = (page: string) => {
                 </v-list-item>
               </v-list>
               <v-divider />
-              <v-card-text>查看所有项目</v-card-text>
+              <v-card-text @click='changePage(`/project/list`)'>查看所有项目</v-card-text>
             </v-card>
           </v-menu>
         </div>
