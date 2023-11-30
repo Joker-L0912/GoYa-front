@@ -1,41 +1,39 @@
 <script setup
         lang='ts'>
 import { getIssueList, IssueListItem } from '@/api/issue/list'
+import { getProjectList, ProjectListResponse } from '@/api/project/project'
 import router from '@/router'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { Ref } from 'vue/dist/vue'
 const route = useRoute()
 const tab = ref<string>('toMe')
 const workMenuOpen = ref<boolean>(false)
+const projectMenuOpen = ref<boolean>(false)
 const issueList = ref<IssueListItem[]>()
-const pageNum = ref(1);
-const pageSize = ref(3);
 const projectId = route.params.projectId as string
+
+const projectListResponse: Ref<ProjectListResponse | undefined> = ref();
+
 onMounted(async() => {
   const  data  = await getIssueList({
-    pageNum: pageNum.value,
-    pageSize: pageSize.value,
+    pageNum: 1,
+    pageSize: 3,
     projectId,
   });
   issueList.value = data.data;
 });
-const items = [
-  {
-    title: '【子表单】子表单查看变更，字段显示不正确',
-    subtitle: 'SATD-1',
-  },
-  {
-    title: '【子表单】子表单查看变更，字段显示不正确',
-    subtitle: 'SATD-1',
-  },
-  {
-    title: '【子表单】子表单查看变更，字段显示不正确',
-    subtitle: 'SATD-1',
-  },
-]
+onMounted(async() => {
+  const  data  = await getProjectList({
+    pageNum: 0,
+    pageSize: 3,
+  });
+  projectListResponse.value = data.data;
+});
 const changePage = (page: string) => {
-  workMenuOpen.value = false
   router.push(page)
+  workMenuOpen.value = false
+  projectMenuOpen.value = false
 }
 </script>
 
@@ -142,7 +140,8 @@ const changePage = (page: string) => {
         </div>
         <!--  项目 -->
         <div class='menu-container'>
-          <v-menu :close-on-content-click='false'>
+          <v-menu :close-on-content-click='false'
+                  v-model='projectMenuOpen'>
             <template #activator='{ props }'>
               <v-btn v-bind='props'
                      class='text-button px-2'>
@@ -162,11 +161,12 @@ const changePage = (page: string) => {
                       min-width='300px'
                       max-width='400px'>
                 <v-list-subheader>最近查看</v-list-subheader>
-                <v-list-item v-for='item in items'
-                             :key='item.title'
-                             :title='item.title'
-                             :subtitle='item.subtitle'
-                             class='py-3'>
+                <v-list-item v-for='item in projectListResponse?.content'
+                             :key='item.name'
+                             :title='item.name'
+                             :subtitle='`${item.name}·${item.description}`'
+                             class='py-3'
+                             @click='changePage(`/project/${item.id}/issue`)'>
                   <template #prepend>
                     <div class='mr-3'>
                       <v-img src='@/assets/svg/bug.svg'
@@ -175,7 +175,7 @@ const changePage = (page: string) => {
                     </div>
                   </template>
                   <template #title>
-                    <div class='text-md-body-2'>{{ item.title }}</div>
+                    <div class='text-md-body-2'>{{ item.name }}</div>
                   </template>
                   <template #subtitle='{ subtitle }'>
                     <div class='text-md-body-2'

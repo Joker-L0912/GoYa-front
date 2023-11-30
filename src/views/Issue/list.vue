@@ -1,38 +1,40 @@
 <script setup
         lang='ts'>
-import type { Ref } from 'vue';
-import { computed, onMounted, ref } from 'vue';
-import { getIssueCount, getIssueList } from '@/api/issue/list';
-import type { IssueListItem } from '@/api/issue/list';
+import type { Ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import { getIssueCount, getIssueList } from '@/api/issue/list'
+import type { IssueListItem } from '@/api/issue/list'
 import { useRoute, useRouter } from 'vue-router'
 
-const pageSize = ref<number>(10);
-const pageNum = ref(1);
-const issueList: Ref<IssueListItem[] | undefined> = ref();
-const loading = ref(false);
-const total: Ref<number> = ref(0);
+const pageSize = ref<number>(10)
+const pageNum = ref(1)
+const issueList: Ref<IssueListItem[] | undefined> = ref()
+const loading = ref(false)
+const total: Ref<number> = ref(0)
 const router = useRouter()
 const route = useRoute()
-const projectId =  route.params.projectId as string
+let projectId = route.params.projectId as string
 
 // 请求问题
 onMounted(async() => {
-  const  data  = await getIssueList({
+  const data = await getIssueList({
     pageNum: pageNum.value,
     pageSize: pageSize.value,
     projectId,
-  });
-  issueList.value = data.data;
-});
+  })
+  issueList.value = data.data
+})
 // 获取数量
 onMounted(async() => {
-  const  data  = await getIssueCount({
+  const data = await getIssueCount({
     projectId,
-  });
-  if (data != null) total.value = data.data;
-});
+  })
+  if (data != null) total.value = data.data
+})
 
-const pageCount = computed(() => { return Math.ceil(total.value / pageSize.value); });
+const pageCount = computed(() => {
+  return Math.ceil(total.value / pageSize.value)
+})
 const headers = ref([
   {
     title: '类型',
@@ -70,24 +72,35 @@ const headers = ref([
   }, {
     title: '创建人',
     value: 'createdBy',
-  }]);
+  }])
 const updatePage = async() => {
-  issueList.value = [];
-  if (loading.value === true) return;
-  loading.value = true;
+  if (loading.value === true) return
+  loading.value = true
   await getIssueList({
     pageNum: pageNum.value,
     pageSize: pageSize.value,
     projectId,
-  }).then(res => {
-    issueList.value = res.data;
-  }).finally(() => {
-    loading.value = false;
-  });
-};
-const toIssueDetail = (name: string) => {
-  router.push(`/project/${projectId}/issue/${name}`);
+  })
+      .then(res => {
+        issueList.value = res.data
+      })
+      .finally(() => {
+        loading.value = false
+      })
 }
+const toIssueDetail = (name: string) => {
+  router.push(`/project/${projectId}/issue/${name}`)
+}
+onMounted(() => {
+  watch(
+      () => route.params.projectId,
+      (n, o) => {
+        console.log(n)
+        projectId = n as string
+        pageNum.value = 1
+        updatePage()
+      })
+})
 </script>
 
 <template>
@@ -130,16 +143,18 @@ const toIssueDetail = (name: string) => {
   </div>
 </template>
 
-<style scoped lang='less'>
-.issue-card{
+<style scoped
+       lang='less'>
+.issue-card {
   max-height: calc(100vh - 64px);
 }
-.link{
+
+.link {
   color: #0c66e4;
   font-weight: 600;
 }
 
-.link:hover{
+.link:hover {
   text-decoration: underline #0c66e4 2px;
 }
 </style>

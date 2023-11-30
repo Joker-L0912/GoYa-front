@@ -26,7 +26,7 @@ export interface ProjectListItem {
     icon: null | string;
     id: number;
     issueCount: number;
-    keyword: null | string;
+    keyword: string;
     manager: null | string;
     name: string;
     status: null | string;

@@ -52,7 +52,7 @@ export const useUserStore = defineStore('user', () => {
         userSelectProjectId.value = projectId
     }
     const getProject = () => {
-        return userSelectProjectId.value
+        return userSelectProjectId
     }
     return { token, roles, username, setRoles, login, getInfo, changeRoles, logout, resetToken, setProject, getProject }
 })
