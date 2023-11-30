@@ -21,9 +21,6 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         template: { transformAssetUrls },
       }),
       vuetify({
-        styles: {
-          configFile: 'src/styles/settings.scss',
-        },
       }),
       // env(),
     ],
