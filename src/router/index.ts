@@ -79,7 +79,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     const userStore = useUserStore()
     if (to.path.startsWith('/project') && to.params.projectId) {
-        userStore.setProject(to.params.projectId as string)
+        userStore.setSelectProjectId(to.params.projectId as string)
     }
     next()
 })

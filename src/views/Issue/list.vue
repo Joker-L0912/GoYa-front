@@ -4,7 +4,8 @@ import type { Ref } from 'vue'
 import { computed, onMounted, ref, watch } from 'vue'
 import { getIssueCount, getIssueList } from '@/api/issue/list'
 import type { IssueListItem } from '@/api/issue/list'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
+import { useUserStore } from '@/store/modules/user'
 
 const pageSize = ref<number>(10)
 const pageNum = ref(1)
@@ -12,15 +13,14 @@ const issueList: Ref<IssueListItem[] | undefined> = ref()
 const loading = ref(false)
 const total: Ref<number> = ref(0)
 const router = useRouter()
-const route = useRoute()
-let projectId = route.params.projectId as string
-
+const userStore = useUserStore()
+const projectId = userStore.selectProjectId
 // 请求问题
 onMounted(async() => {
   const data = await getIssueList({
     pageNum: pageNum.value,
     pageSize: pageSize.value,
-    projectId,
+    projectId: userStore.selectProjectId,
   })
   issueList.value = data.data
 })
@@ -29,7 +29,7 @@ onMounted(async() => {
   const data = await getIssueCount({
     projectId,
   })
-  if (data != null) total.value = data.data
+  total.value = data.data
 })
 
 const pageCount = computed(() => {
@@ -93,10 +93,9 @@ const toIssueDetail = (name: string) => {
 }
 onMounted(() => {
   watch(
-      () => route.params.projectId,
+      () => userStore.selectProjectId,
       (n, o) => {
         console.log(n)
-        projectId = n as string
         pageNum.value = 1
         updatePage()
       })
