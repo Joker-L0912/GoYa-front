@@ -126,7 +126,10 @@ onMounted(() => {
           </div>
         </template>
         <template #[`item.gist`]='{ value }'>
-          <v-sheet max-width='600px'>{{ value }}</v-sheet>
+          <v-sheet class='bg-transparent'
+                   max-width='600px'>
+            {{ value }}
+          </v-sheet>
         </template>
         <template #bottom>
           <div class='text-center pt-2'>

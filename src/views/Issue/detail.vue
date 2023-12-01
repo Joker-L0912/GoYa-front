@@ -6,10 +6,10 @@ import IssueInfoRight from '@/components/IssueInfo/IssueInfoRight.vue'
 import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { getIssue, Issue } from '@/api/issue/list'
-
+import { useUserStore } from '@/store/modules/user'
 const route = useRoute()
+const userStore = useUserStore()
 let name = route.params.name as string
-const projectId = route.params.projectId as string
 let issueDetail = ref<Issue>()
 const getIssueDetail = async(name: string, projectId: string) => {
   const { data } = await getIssue(name, { 'projectId': projectId })
@@ -19,11 +19,11 @@ const getIssueDetail = async(name: string, projectId: string) => {
 onMounted(() => {
   watch(() => route.params.name as string,
       (n, o) => {
-        getIssueDetail(n, projectId)
+        getIssueDetail(n, userStore.selectProjectId)
         name = n
       })
 })
-onMounted(() => getIssueDetail(name, projectId))
+onMounted(() => getIssueDetail(name, userStore.selectProjectId))
 
 </script>
 

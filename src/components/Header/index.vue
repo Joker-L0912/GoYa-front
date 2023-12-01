@@ -3,23 +3,23 @@
 import { getIssueList, IssueListItem } from '@/api/issue/list'
 import { getProjectList, ProjectListResponse } from '@/api/project/project'
 import router from '@/router'
-import { onMounted, ref } from 'vue'
+import { useUserStore } from '@/store/modules/user'
+import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { Ref } from 'vue/dist/vue'
-const route = useRoute()
+
+const userStore = useUserStore()
 const tab = ref<string>('toMe')
 const workMenuOpen = ref<boolean>(false)
 const projectMenuOpen = ref<boolean>(false)
 const issueList = ref<IssueListItem[]>()
-const projectId = route.params.projectId as string
-
 const projectListResponse: Ref<ProjectListResponse | undefined> = ref();
 
 onMounted(async() => {
   const  data  = await getIssueList({
     pageNum: 1,
     pageSize: 3,
-    projectId,
+    projectId: userStore.selectProjectId,
   });
   issueList.value = data.data;
 });
@@ -30,6 +30,15 @@ onMounted(async() => {
   });
   projectListResponse.value = data.data;
 });
+watch(() => userStore.selectProjectId,
+    async() => {
+      const  data  = await getIssueList({
+        pageNum: 1,
+        pageSize: 3,
+        projectId: userStore.selectProjectId,
+      });
+      issueList.value = data.data;
+    })
 const changePage = (page: string) => {
   router.push(page)
   workMenuOpen.value = false
@@ -83,7 +92,7 @@ const changePage = (page: string) => {
                                  :title='item.gist'
                                  :subtitle='item.projectName'
                                  class='py-3'
-                                 @click='changePage( `/project/${projectId}/issue/${item.name}`)'
+                                 @click='changePage( `/project/${userStore.selectProjectId}/issue/${item.name}`)'
                                  style='cursor: pointer'>
                       <template #prepend>
                         <div class='mr-3'>
@@ -132,7 +141,7 @@ const changePage = (page: string) => {
                   <v-divider />
                 </v-window-item>
               </v-window>
-              <v-card-text @click='changePage(`/project/${projectId}/issue/list`)'>
+              <v-card-text @click='changePage(`/project/${userStore.selectProjectId}/issue/list`)'>
                 总览
               </v-card-text>
             </v-card>
