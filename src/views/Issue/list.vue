@@ -14,20 +14,19 @@ const loading = ref(false)
 const total: Ref<number> = ref(0)
 const router = useRouter()
 const userStore = useUserStore()
-const projectId = userStore.selectProjectId
 // 请求问题
 onMounted(async() => {
   const data = await getIssueList({
     pageNum: pageNum.value,
     pageSize: pageSize.value,
-    projectId: userStore.selectProjectId,
+    projectId: userStore.getSelectProjectId,
   })
   issueList.value = data.data
 })
 // 获取数量
 onMounted(async() => {
   const data = await getIssueCount({
-    projectId,
+    projectId: userStore.getSelectProjectId,
   })
   total.value = data.data
 })
@@ -79,7 +78,7 @@ const updatePage = async() => {
   await getIssueList({
     pageNum: pageNum.value,
     pageSize: pageSize.value,
-    projectId,
+    projectId: userStore.getSelectProjectId,
   })
       .then(res => {
         issueList.value = res.data
@@ -89,14 +88,12 @@ const updatePage = async() => {
       })
 }
 const toIssueDetail = (name: string) => {
-  router.push(`/project/${projectId}/issue/${name}`)
+  router.push(`/project/${userStore.getSelectProjectId}/issue/${name}`)
 }
 onMounted(() => {
   watch(
-      () => userStore.selectProjectId,
-      (n, o) => {
-        console.log(n)
-        pageNum.value = 1
+      () => userStore.getSelectProjectId,
+      () => {
         updatePage()
       })
 })

@@ -18,6 +18,12 @@ export const useUserStore = defineStore('userStore', {
         selectProjectId: '',
     }),
     getters: {
+        getSelectProjectId(): string {
+            if (this.selectProjectId === '') {
+                this.selectProjectId = window.localStorage.getItem('selectProjectId') || ''
+            }
+            return this.selectProjectId
+        },
     },
     actions: {
         setRoles(value: string[]) {
@@ -35,6 +41,7 @@ export const useUserStore = defineStore('userStore', {
         },
         setSelectProjectId(value: string) {
             this.selectProjectId = value
+            window.localStorage.setItem('selectProjectId', value)
         },
     },
     // /** 获取用户详情 */

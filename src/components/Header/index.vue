@@ -2,10 +2,10 @@
         lang='ts'>
 import { getIssueList, IssueListItem } from '@/api/issue/list'
 import { getProjectList, ProjectListResponse } from '@/api/project/project'
+import CreateIssue  from '@/components/CreateIssue/index.vue'
 import router from '@/router'
 import { useUserStore } from '@/store/modules/user'
 import { onMounted, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
 import { Ref } from 'vue/dist/vue'
 
 const userStore = useUserStore()
@@ -13,31 +13,33 @@ const tab = ref<string>('toMe')
 const workMenuOpen = ref<boolean>(false)
 const projectMenuOpen = ref<boolean>(false)
 const issueList = ref<IssueListItem[]>()
-const projectListResponse: Ref<ProjectListResponse | undefined> = ref();
+const projectListResponse: Ref<ProjectListResponse | undefined> = ref()
+
+const valid = ref<boolean>(false)
 
 onMounted(async() => {
-  const  data  = await getIssueList({
+  const data = await getIssueList({
     pageNum: 1,
     pageSize: 3,
-    projectId: userStore.selectProjectId,
-  });
-  issueList.value = data.data;
-});
+    projectId: userStore.getSelectProjectId,
+  })
+  issueList.value = data.data
+})
 onMounted(async() => {
-  const  data  = await getProjectList({
+  const data = await getProjectList({
     pageNum: 0,
     pageSize: 3,
-  });
-  projectListResponse.value = data.data;
-});
-watch(() => userStore.selectProjectId,
+  })
+  projectListResponse.value = data.data
+})
+watch(() => userStore.getSelectProjectId,
     async() => {
-      const  data  = await getIssueList({
+      const data = await getIssueList({
         pageNum: 1,
         pageSize: 3,
-        projectId: userStore.selectProjectId,
-      });
-      issueList.value = data.data;
+        projectId: userStore.getSelectProjectId,
+      })
+      issueList.value = data.data
     })
 const changePage = (page: string) => {
   router.push(page)
@@ -92,7 +94,7 @@ const changePage = (page: string) => {
                                  :title='item.gist'
                                  :subtitle='item.projectName'
                                  class='py-3'
-                                 @click='changePage( `/project/${userStore.selectProjectId}/issue/${item.name}`)'
+                                 @click='changePage( `/project/${userStore.getSelectProjectId}/issue/${item.name}`)'
                                  style='cursor: pointer'>
                       <template #prepend>
                         <div class='mr-3'>
@@ -114,34 +116,34 @@ const changePage = (page: string) => {
                 </v-window-item>
                 <!-- 最近-->
                 <v-window-item value='recently'>
-                  <v-list lines='one'
-                          min-width='300px'
-                          max-width='400px'>
-                    <v-list-item v-for='item in items'
-                                 :key='item.title'
-                                 :title='item.title'
-                                 :subtitle='item.subtitle'
-                                 class='py-3'>
-                      <template #prepend>
-                        <div class='mr-3'>
-                          <v-img src='@/assets/svg/bug.svg'
-                                 width='20'
-                                 height='20' />
-                        </div>
-                      </template>
-                      <template #title>
-                        <div class='text-md-body-2'>{{ item.title }}</div>
-                      </template>
-                      <template #subtitle='{ subtitle }'>
-                        <div class='text-md-body-2'
-                             v-html='subtitle' />
-                      </template>
-                    </v-list-item>
-                  </v-list>
+                  <!--                  <v-list lines='one'-->
+                  <!--                          min-width='300px'-->
+                  <!--                          max-width='400px'>-->
+                  <!--                    <v-list-item v-for='item in items'-->
+                  <!--                                 :key='item.title'-->
+                  <!--                                 :title='item.title'-->
+                  <!--                                 :subtitle='item.subtitle'-->
+                  <!--                                 class='py-3'>-->
+                  <!--                      <template #prepend>-->
+                  <!--                        <div class='mr-3'>-->
+                  <!--                          <v-img src='@/assets/svg/bug.svg'-->
+                  <!--                                 width='20'-->
+                  <!--                                 height='20' />-->
+                  <!--                        </div>-->
+                  <!--                      </template>-->
+                  <!--                      <template #title>-->
+                  <!--                        <div class='text-md-body-2'>{{ item.title }}</div>-->
+                  <!--                      </template>-->
+                  <!--                      <template #subtitle='{ subtitle }'>-->
+                  <!--                        <div class='text-md-body-2'-->
+                  <!--                             v-html='subtitle' />-->
+                  <!--                      </template>-->
+                  <!--                    </v-list-item>-->
+                  <!--                  </v-list>-->
                   <v-divider />
                 </v-window-item>
               </v-window>
-              <v-card-text @click='changePage(`/project/${userStore.selectProjectId}/issue/list`)'>
+              <v-card-text @click='changePage(`/project/${userStore.getSelectProjectId}/issue/list`)'>
                 总览
               </v-card-text>
             </v-card>
@@ -246,16 +248,44 @@ const changePage = (page: string) => {
             </v-card>
           </v-menu>
         </div>
-        <v-btn class='bg-white mx-1'>创建</v-btn>
+        <v-dialog width='800'>
+          <template #activator='{ props }'>
+            <v-btn v-bind='props'
+                   class='bg-white mx-1'
+                   text='创建' />
+          </template>
+
+          <template #default='{ isActive }'>
+            <v-card>
+              <v-card-title class='bg-grey-darken-1'>
+                创建问题
+              </v-card-title>
+              <v-card-item>
+                <v-form v-model='valid'>
+                  <v-container>
+                    <CreateIssue />
+                  </v-container>
+                </v-form>
+              </v-card-item>
+              <v-card-actions>
+                <v-spacer />
+
+                <v-btn text='创建'
+                       @click='isActive.value = false' />
+              </v-card-actions>
+            </v-card>
+          </template>
+        </v-dialog>
       </v-sheet>
     </v-toolbar>
   </v-app-bar>
 </template>
 
 <style scoped
-         lang='sass'>
+       lang='sass'>
 .menu-container
   margin-left: 10px
+
 .v-list-item:hover, .v-card-text:hover
   background-color: #F5F5F5
 </style>

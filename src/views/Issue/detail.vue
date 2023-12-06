@@ -18,12 +18,12 @@ const getIssueDetail = async(name: string, projectId: string) => {
 // 监听器 监听参数变化
 onMounted(() => {
   watch(() => route.params.name as string,
-      (n, o) => {
-        getIssueDetail(n, userStore.selectProjectId)
+      n => {
+        getIssueDetail(n, userStore.getSelectProjectId)
         name = n
       })
 })
-onMounted(() => getIssueDetail(name, userStore.selectProjectId))
+onMounted(() => getIssueDetail(name, userStore.getSelectProjectId))
 
 </script>
 
