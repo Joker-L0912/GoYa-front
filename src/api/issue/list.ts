@@ -1,4 +1,4 @@
-import { useGet } from '@/utils/request';
+import { useGet, usePost } from '@/utils/request'
 
 /**
  * 问题列表元素
@@ -118,3 +118,23 @@ export const getIssueCount = async(params: any): Promise<ApiResponseData<number>
 export const getIssue = async(name: string, params: any) => {
   return useGet<Issue>(`/issue/issue/${name}`, params);
 };
+
+export const getIssueType = async() => {
+  return useGet<any>('/issue/type/list')
+}
+
+export const getIssuePriority = async() => {
+  return useGet<any>('/issue/priority/list')
+}
+
+export const getProjectVersion = async() => {
+  return useGet<any>('/issue/version/list')
+}
+
+export const getProjectModule = async() => {
+  return useGet<any>('/issue/projectModule/list')
+}
+
+export const postIssue = async(params: any) => {
+  return usePost<any>('/issue/issue', params);
+}

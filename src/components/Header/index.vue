@@ -16,7 +16,7 @@ const issueList = ref<IssueListItem[]>()
 const projectListResponse: Ref<ProjectListResponse | undefined> = ref()
 
 const valid = ref<boolean>(false)
-
+const createIssueChild = ref()
 onMounted(async() => {
   const data = await getIssueList({
     pageNum: 1,
@@ -45,6 +45,10 @@ const changePage = (page: string) => {
   router.push(page)
   workMenuOpen.value = false
   projectMenuOpen.value = false
+}
+
+const createIssue = () => {
+  createIssueChild.value.createIssue()
 }
 </script>
 
@@ -263,7 +267,7 @@ const changePage = (page: string) => {
               <v-card-item>
                 <v-form v-model='valid'>
                   <v-container>
-                    <CreateIssue />
+                    <CreateIssue ref='createIssueChild' />
                   </v-container>
                 </v-form>
               </v-card-item>
@@ -271,7 +275,7 @@ const changePage = (page: string) => {
                 <v-spacer />
 
                 <v-btn text='创建'
-                       @click='isActive.value = false' />
+                       @click='createIssue' />
               </v-card-actions>
             </v-card>
           </template>
