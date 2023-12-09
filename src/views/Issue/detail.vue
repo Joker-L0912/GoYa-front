@@ -1,6 +1,5 @@
 <script setup
         lang='ts'>
-
 import IssueInfoLeft from '@/components/IssueInfo/IssueInfoLeft.vue'
 import IssueInfoRight from '@/components/IssueInfo/IssueInfoRight.vue'
 import { onMounted, ref, watch } from 'vue'

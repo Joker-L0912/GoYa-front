@@ -1,3 +1,4 @@
+import MessageUtil from '@/utils/message'
 import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import axios from 'axios';
 import { ContentTypeEnum, RequestEnum } from '@/enum/http-enum';
@@ -38,6 +39,10 @@ const requestHandler = async(config: InternalAxiosRequestConfig & RequestConfigE
 };
 
 const responseHandler = (response: any): ApiResponseData<any> | AxiosResponse<any> | Promise<any> | any => {
+  // const data = response.data;
+  // if (data.code !== '00000') {
+  //   MessageUtil.error(data.message)
+  // }
   return response.data;
 };
 //

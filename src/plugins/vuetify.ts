@@ -1,12 +1,13 @@
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
+// import '@/styles/main.scss'
 import {
   VDataTable,
   VDataTableServer,
   VDataTableVirtual,
 } from 'vuetify/labs/VDataTable'
 import { createVuetify } from 'vuetify'
-import { aliases, mdi } from 'vuetify/iconsets/mdi'
+import { aliases, mdi } from 'vuetify/iconsets/mdi-svg'
 export default createVuetify({
   theme: {
     themes: {

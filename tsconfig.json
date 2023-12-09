@@ -10,14 +10,18 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "esModuleInterop": true,
-    "lib": ["DOM", "ESNext", "WebWorker"],
+    "lib": [
+      "DOM",
+      "ESNext",
+      "WebWorker"
+    ],
     "skipLibCheck": true,
     "noEmit": true,
     "paths": {
       "@/*": [
-       "src/*"
+        "src/*"
       ]
-     }
+    }
   },
   "include": [
     "src/**/*.ts",
@@ -29,6 +33,12 @@
     "vite.config.ts",
     "types/api.d.ts"
   ],
-  "references": [{ "path": "./tsconfig.node.json" }],
-  "exclude": ["node_modules"]
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

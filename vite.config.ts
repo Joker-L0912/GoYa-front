@@ -20,8 +20,10 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       vue({
         template: { transformAssetUrls },
       }),
-      // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
       vuetify({
+        styles: {
+          configFile: 'src/styles/settings.scss',
+        },
       }),
       // env(),
     ],

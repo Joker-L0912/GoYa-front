@@ -7,6 +7,7 @@ import router from '@/router'
 import { useUserStore } from '@/store/modules/user'
 import { onMounted, ref, watch } from 'vue'
 import { Ref } from 'vue/dist/vue'
+import { mdiChevronDown } from '@mdi/js'
 
 const userStore = useUserStore()
 const tab = ref<string>('toMe')
@@ -72,7 +73,7 @@ const createIssue = () => {
                 <div class='d-flex justify-center align-center'>
                   <div class='h-100'>您的工作</div>
                   <div>
-                    <v-icon icon='mdi-chevron-down'
+                    <v-icon :icon='mdiChevronDown'
                             size='20'
                             h-100 />
                   </div>
@@ -163,7 +164,7 @@ const createIssue = () => {
                 <div class='d-flex justify-center align-center'>
                   <div class='h-100'>项目</div>
                   <div>
-                    <v-icon icon='mdi-chevron-down'
+                    <v-icon :icon='mdiChevronDown'
                             size='20'
                             h-100 />
                   </div>
@@ -212,7 +213,7 @@ const createIssue = () => {
                 <div class='d-flex justify-center align-center'>
                   <div class='h-100'>筛选器</div>
                   <div>
-                    <v-icon icon='mdi-chevron-down'
+                    <v-icon :icon='mdiChevronDown'
                             size='20'
                             h-100 />
                   </div>
@@ -235,7 +236,7 @@ const createIssue = () => {
                 <div class='d-flex justify-center align-center'>
                   <div class='h-100'>团队</div>
                   <div>
-                    <v-icon icon='mdi-chevron-down'
+                    <v-icon :icon='mdiChevronDown'
                             size='20'
                             h-100 />
                   </div>

@@ -37,6 +37,9 @@ devDependencies:
   '@babel/types':
     specifier: ^7.23.0
     version: 7.23.0
+  '@mdi/js':
+    specifier: ^7.3.67
+    version: 7.3.67
   '@types/node':
     specifier: ^18.18.5
     version: 18.18.5
@@ -370,6 +373,10 @@ packages:
   /@mdi/font@7.0.96:
     resolution: {integrity: sha512-rzlxTfR64hqY8yiBzDjmANfcd8rv+T5C0Yedv/TWk2QyAQYdc66e0kaN1ipmnYU3RukHRTRcBARHzzm+tIhL7w==}
     dev: false
+
+  /@mdi/js@7.3.67:
+    resolution: {integrity: sha512-MnRjknFqpTC6FifhGHjZ0+QYq2bAkZFQqIj8JA2AdPZbBxUvr8QSgB2yPAJ8/ob/XkR41xlg5majDR3c1JP1hw==}
+    dev: true
 
   /@mistjs/eslint-config-basic@0.18.8(@typescript-eslint/parser@5.62.0)(eslint-import-resolver-typescript@3.6.1)(eslint@8.51.0):
     resolution: {integrity: sha512-b/awI/7Ve407E5qUcZdQLwMsK7l/jmbrLVKm2D5fYNPGbJ6AGWpb9lLoIXGWU1PMF7GpSE4bVMAUwYdUw6pG1w==}
