@@ -1,11 +1,14 @@
 <script lang="ts" setup>
-import MessageUtil from '@/utils/message'
+import Toast from '@/utils/toast';
+
+const notify = () => {
+  Toast.success('123')
+}
 </script>
 
 <template>
   123
-  <v-btn @click='MessageUtil.success("操作成功")' />
-  <v-btn @click='MessageUtil.error("操作失败")' />
+  <v-btn @click='notify()'>asd</v-btn>
 </template>
 
 <style scoped>

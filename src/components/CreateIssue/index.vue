@@ -59,7 +59,7 @@ const handledBy = ref<string>('')
 const developedBy = ref<string>('')
 
 const createIssue = async() => {
-  const { data } = await postIssue({
+  const  data  = await postIssue({
     projectId: projectId.value,
     gist: gist.value,
     issueTypeId: issueTypeId.value,
@@ -75,6 +75,7 @@ const createIssue = async() => {
     developedBy: developedBy.value,
   })
   console.log(data)
+  MessageUtil.alert(data, true)
 }
 
 defineExpose({ createIssue })
