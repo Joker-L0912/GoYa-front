@@ -19,7 +19,7 @@ export function registerPlugins(app: App) {
         transition: toast.TRANSITIONS.SLIDE,
         dangerouslyHTMLString: true,
         theme: 'light',
-        hideProgressBar: true,
+        // hideProgressBar: true,
       } as ToastContainerOptions,
     )
 }

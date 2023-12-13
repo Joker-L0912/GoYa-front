@@ -1,6 +1,7 @@
 import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import axios from 'axios';
 import { ContentTypeEnum, RequestEnum } from '@/enum/http-enum';
+import Toast from './toast';
 
 export interface RequestConfigExtra {
   token?: boolean;
@@ -38,17 +39,23 @@ const requestHandler = async(config: InternalAxiosRequestConfig & RequestConfigE
 };
 
 const responseHandler = (response: any): ApiResponseData<any> | AxiosResponse<any> | Promise<any> | any => {
-  return response.data;
+  const data = response.data
+  if (data.status != '00000') {
+    Toast.error(data.message)
+  }
+  return data;
 };
 //
-// const errorHandler = (error: AxiosError): Promise<any> => {
-//   if (error.response) {
-//     // const { data, status, statusText } = error.response as AxiosResponse<ResponseBody>
-//   }
-//   return Promise.reject(error);
-// };
+const errorHandler = (error: AxiosError): Promise<any> => {
+  if (error.response) {
+    // const { statusText } = error.response as AxiosResponse<ApiResponseData<any>>
+    // console.error(data, status, statusText)
+    // Toast.error(statusText)
+  }
+  return Promise.reject(error);
+};
 instance.interceptors.request.use(requestHandler);
-instance.interceptors.response.use(responseHandler);
+instance.interceptors.response.use(responseHandler, errorHandler);
 export default instance;
 const instancePromise = async <R = any, T = any>(options: AxiosOptions<T> & RequestConfigExtra): Promise<ApiResponseData<R>> => {
   const { loading } = options;

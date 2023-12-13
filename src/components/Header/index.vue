@@ -15,9 +15,6 @@ const workMenuOpen = ref<boolean>(false)
 const projectMenuOpen = ref<boolean>(false)
 const issueList = ref<IssueListItem[]>()
 const projectListResponse: Ref<ProjectListResponse | undefined> = ref()
-
-const valid = ref<boolean>(false)
-const createIssueChild = ref()
 onMounted(async() => {
   const data = await getIssueList({
     pageNum: 1,
@@ -46,10 +43,6 @@ const changePage = (page: string) => {
   router.push(page)
   workMenuOpen.value = false
   projectMenuOpen.value = false
-}
-
-const createIssue = () => {
-  createIssueChild.value.createIssue()
 }
 </script>
 
@@ -253,34 +246,7 @@ const createIssue = () => {
             </v-card>
           </v-menu>
         </div>
-        <v-dialog width='800'>
-          <template #activator='{ props }'>
-            <v-btn v-bind='props'
-                   class='bg-white mx-1'
-                   text='创建' />
-          </template>
-
-          <template #default='{ isActive }'>
-            <v-card>
-              <v-card-title class='bg-grey-darken-1'>
-                创建问题
-              </v-card-title>
-              <v-card-item>
-                <v-form v-model='valid'>
-                  <v-container>
-                    <CreateIssue ref='createIssueChild' />
-                  </v-container>
-                </v-form>
-              </v-card-item>
-              <v-card-actions>
-                <v-spacer />
-
-                <v-btn text='创建'
-                       @click='createIssue' />
-              </v-card-actions>
-            </v-card>
-          </template>
-        </v-dialog>
+        <CreateIssue />
       </v-sheet>
     </v-toolbar>
   </v-app-bar>

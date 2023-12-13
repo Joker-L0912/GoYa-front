@@ -2,6 +2,7 @@
         lang='ts'>
 
 import { ref, toRefs } from 'vue'
+import { mdiEyeOutline, mdiThumbUpOutline, mdiShareVariantOutline, mdiDotsVertical } from '@mdi/js';
 
 const param = defineProps({
   issueInfo: {
@@ -26,16 +27,16 @@ const changeLike = () => {
     <div class='d-flex justify-end mb-6'>
       <v-sheet class='ma-2 pa-2 icon-container'
                :onclick='changAttention'>
-        <v-icon icon='mdi-eye-outline'
+        <v-icon :icon='mdiEyeOutline'
                 :color='isAttention ? "#0C66E4" : ""' />
       </v-sheet>
       <v-sheet class='ma-2 pa-2 icon-container'
                @click='changeLike'>
-        <v-icon icon='mdi-thumb-up-outline'
+        <v-icon :icon='mdiThumbUpOutline'
                 :color='isLike ? "#0C66E4" : ""' />
       </v-sheet>
       <v-sheet class='ma-2 pa-2 icon-container'>
-        <v-icon icon='mdi-share-variant-outline' />
+        <v-icon :icon='mdiShareVariantOutline' />
       </v-sheet>
       <v-sheet class='ma-2 pa-2 icon-container'>
         <v-menu location='bottom'>
@@ -44,7 +45,7 @@ const changeLike = () => {
                  class='text-body-1 px-2'>
               <div class='d-flex justify-center align-center'>
                 <div>
-                  <v-icon icon='mdi-dots-horizontal '
+                  <v-icon :icon='mdiDotsVertical'
                           size='20'
                           h-100 />
                 </div>
@@ -63,13 +64,6 @@ const changeLike = () => {
           </v-card>
         </v-menu>
       </v-sheet>
-    </div>
-    <div class='d-flex mb-6'>
-      <v-btn :elevation='0'
-             class='status-btn'
-             append-icon='mdi-chevron-down'>
-        {{ issueInfo.issueStatus }}
-      </v-btn>
     </div>
     <div class='mb-6'>
       <v-card>
