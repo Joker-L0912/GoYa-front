@@ -3,7 +3,19 @@
 
 import { ref, toRefs } from 'vue'
 import { mdiEyeOutline, mdiThumbUpOutline, mdiShareVariantOutline, mdiDotsVertical } from '@mdi/js';
-
+import { useRoute } from 'vue-router';
+import { onMounted } from 'vue';
+import { getNextLine } from '@/api/activiti/activiti';
+const route = useRoute()
+const issueName = route.params.name
+const nextLines = ref();
+onMounted(() => {
+  getNextLine({
+    issueName,
+  }).then(res => {
+    console.log(res)
+  })
+})
 const param = defineProps({
   issueInfo: {
     type: Object,
@@ -20,6 +32,7 @@ const changAttention = () => {
 const changeLike = () => {
   isLike.value = !isLike.value
 }
+
 </script>
 
 <template>

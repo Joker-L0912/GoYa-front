@@ -10,7 +10,7 @@ const props = defineProps({
   },
 });
 const { issueInfo } = toRefs(props)
-const tab =   ref('');
+const tab = ref('');
 </script>
 
 <template>
