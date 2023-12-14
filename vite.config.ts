@@ -41,12 +41,17 @@ export default ({ mode }: ConfigEnv): UserConfig => {
     server: {
       port: 6678,
       proxy: {
-        ...proxyObj,
-        [env.VITE_APP_BASE_API]: {
-          target: env.VITE_APP_BASE_URL,
+        '/api/workflow': {
+          target: 'http://127.0.0.1:8040/',
           changeOrigin: true,
           rewrite: path => path.replace(new RegExp(`^${env.VITE_APP_BASE_API}`), ''),
         },
+        ...proxyObj,
+        // [env.VITE_APP_BASE_API]: {
+        //   target: env.VITE_APP_BASE_URL,
+        //   changeOrigin: true,
+        //   rewrite: path => path.replace(new RegExp(`^${env.VITE_APP_BASE_API}`), ''),
+        // },
       },
     },
   };
