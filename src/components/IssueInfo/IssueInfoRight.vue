@@ -5,15 +5,17 @@ import { ref, toRefs } from 'vue'
 import { mdiEyeOutline, mdiThumbUpOutline, mdiShareVariantOutline, mdiDotsVertical } from '@mdi/js';
 import { useRoute } from 'vue-router';
 import { onMounted } from 'vue';
-import { getNextLine } from '@/api/activiti/activiti';
+import { getNextLine, taskComplete } from '@/api/activiti/activiti';
+import { mdiChevronDown } from '@mdi/js';
+
 const route = useRoute()
 const issueName = route.params.name
-const nextLines = ref();
+const issueProcessStatus = ref();
 onMounted(() => {
   getNextLine({
     issueName,
   }).then(res => {
-    console.log(res)
+    issueProcessStatus.value = res.data
   })
 })
 const param = defineProps({
@@ -26,11 +28,29 @@ const { issueInfo } = toRefs(param)
 
 const isAttention = ref<boolean>(true)
 const isLike = ref<boolean>(true)
+const issueStautsBtnLoading = ref<boolean>(false)
 const changAttention = () => {
   isAttention.value = !isAttention.value
 }
 const changeLike = () => {
   isLike.value = !isLike.value
+}
+
+const complete = (item: any) => {
+  if (issueStautsBtnLoading.value) return
+  issueStautsBtnLoading.value = true
+  taskComplete({
+    'issueName': issueInfo.value.name,
+    'selectedNode': {
+        'id': item.id,
+    },
+  }).then(res => {
+    console.log(res)
+  }).finally(() => {
+    issueStautsBtnLoading.value = false
+  })
+  console.log(item)
+  console.log(issueInfo.value)
 }
 
 </script>
@@ -75,6 +95,28 @@ const changeLike = () => {
             </v-list>
             <v-divider />
           </v-card>
+        </v-menu>
+      </v-sheet>
+    </div>
+    <div class='btn-container my-2'>
+      <v-sheet class='d-flex'>
+        <v-menu transition='slide-y-transition'>
+          <template #activator='{ props }'>
+            <v-btn v-bind='props'
+                   :loading='issueStautsBtnLoading'
+                   :append-icon='mdiChevronDown'>
+              {{ issueProcessStatus?.currentNodeName }}
+            </v-btn>
+          </template>
+          <v-list density='compact'>
+            <v-list-item v-for='(item, i) in issueProcessStatus?.nextLines'
+                         :key='i'
+                         :value='i'
+                         @click='complete(item)'>
+              {{ item.name }}
+              <!-- <v-list-item-title class='text-md-button'>{{ item.name }}</v-list-item-title> -->
+            </v-list-item>
+          </v-list>
         </v-menu>
       </v-sheet>
     </div>
