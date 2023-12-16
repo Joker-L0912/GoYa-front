@@ -5,14 +5,14 @@ import { ref, toRefs } from 'vue'
 import { mdiEyeOutline, mdiThumbUpOutline, mdiShareVariantOutline, mdiDotsVertical } from '@mdi/js';
 import { useRoute } from 'vue-router';
 import { onMounted } from 'vue';
-import { getNextLine, taskComplete } from '@/api/activiti/activiti';
+import { getProcessIssueStatusApi, taskComplete } from '@/api/activiti/activiti';
 import { mdiChevronDown } from '@mdi/js';
 
 const route = useRoute()
 const issueName = route.params.name
 const issueProcessStatus = ref();
 onMounted(() => {
-  getNextLine({
+  getProcessIssueStatusApi({
     issueName,
   }).then(res => {
     issueProcessStatus.value = res.data
@@ -46,6 +46,11 @@ const complete = (item: any) => {
     },
   }).then(res => {
     console.log(res)
+    getProcessIssueStatusApi({
+    issueName,
+  }).then(res => {
+    issueProcessStatus.value = res.data
+  })
   }).finally(() => {
     issueStautsBtnLoading.value = false
   })
@@ -57,6 +62,7 @@ const complete = (item: any) => {
 
 <template>
   <div v-if='issueInfo'>
+    <!-- 问题详情页 右上角 -->
     <div class='d-flex justify-end mb-6'>
       <v-sheet class='ma-2 pa-2 icon-container'
                :onclick='changAttention'>
@@ -103,7 +109,7 @@ const complete = (item: any) => {
         <v-menu transition='slide-y-transition'>
           <template #activator='{ props }'>
             <v-btn v-bind='props'
-                   :loading='issueStautsBtnLoading'
+                   :loading='issueStautsBtnLoading || !issueProcessStatus'
                    :append-icon='mdiChevronDown'>
               {{ issueProcessStatus?.currentNodeName }}
             </v-btn>
