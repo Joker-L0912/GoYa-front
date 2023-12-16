@@ -14,22 +14,6 @@ const loading = ref(false)
 const total: Ref<number> = ref(0)
 const router = useRouter()
 const userStore = useUserStore()
-// 请求问题
-onMounted(async() => {
-  const data = await getIssueList({
-    pageNum: pageNum.value,
-    pageSize: pageSize.value,
-    projectId: userStore.getSelectProjectId,
-  })
-  issueList.value = data.data
-})
-// 获取数量
-onMounted(async() => {
-  const data = await getIssueCount({
-    projectId: userStore.getSelectProjectId,
-  })
-  total.value = data.data
-})
 
 const pageCount = computed(() => {
   return Math.ceil(total.value / pageSize.value)
@@ -87,6 +71,12 @@ const updatePage = async() => {
         loading.value = false
       })
 }
+const updatePageCount = async() => {
+  const data = await getIssueCount({
+    projectId: userStore.getSelectProjectId,
+  })
+  total.value = data.data
+}
 const toIssueDetail = (name: string) => {
   router.push(`/project/${userStore.getSelectProjectId}/issue/${name}`)
 }
@@ -95,7 +85,21 @@ onMounted(() => {
       () => userStore.getSelectProjectId,
       () => {
         updatePage()
+        updatePageCount()
       })
+})
+// 请求问题
+onMounted(async() => {
+  const data = await getIssueList({
+    pageNum: pageNum.value,
+    pageSize: pageSize.value,
+    projectId: userStore.getSelectProjectId,
+  })
+  issueList.value = data.data
+})
+// 获取数量
+onMounted(async() => {
+  updatePageCount()
 })
 </script>
 
@@ -129,7 +133,7 @@ onMounted(() => {
           </v-sheet>
         </template>
         <template #bottom>
-          <div class='text-center pt-2'>
+          <div class='pt-2 d-flex flex-row-reverse pr-10'>
             <v-pagination v-model='pageNum'
                           :length='pageCount'
                           density='comfortable'
