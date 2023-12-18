@@ -46,6 +46,11 @@ export default ({ mode }: ConfigEnv): UserConfig => {
           changeOrigin: true,
           rewrite: path => path.replace(new RegExp(`^${env.VITE_APP_BASE_API}`), ''),
         },
+        '/api/auth': {
+          target: 'http://127.0.0.1:8010/',
+          changeOrigin: true,
+          rewrite: path => path.replace(new RegExp(`^${env.VITE_APP_BASE_API}`), ''),
+        },
         ...proxyObj,
         // [env.VITE_APP_BASE_API]: {
         //   target: env.VITE_APP_BASE_URL,

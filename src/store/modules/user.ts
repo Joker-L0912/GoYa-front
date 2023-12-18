@@ -24,6 +24,15 @@ export const useUserStore = defineStore('userStore', {
             }
             return this.selectProjectId
         },
+        localToken(): string {
+            let token = ''
+            if (this.token) {
+                token = this.token
+            } else {
+                token = window.localStorage.getItem('token') || ''
+            }
+            return token
+        },
     },
     actions: {
         setRoles(value: string[]) {
@@ -31,11 +40,13 @@ export const useUserStore = defineStore('userStore', {
         },
         setToken(value: string) {
             this.token = value
+            window.localStorage.setItem('token', value)
         },
         async login(data: LoginRequestData) {
             return loginApi(data).then(res => {
-                this.setToken(res.data.data.token)
-                this.token = res.data.data.token
+                console.log(res)
+                this.setToken(res.data.token)
+                this.token = res.data.token
                 return res
             })
         },

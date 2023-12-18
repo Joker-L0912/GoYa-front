@@ -7,7 +7,7 @@ import type { IssueListItem } from '@/api/issue/list'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/store/modules/user'
 
-const pageSize = ref<number>(10)
+const pageSize = ref<number>(20)
 const pageNum = ref(1)
 const issueList: Ref<IssueListItem[] | undefined> = ref()
 const loading = ref(false)

@@ -11,6 +11,8 @@ import { mdiChevronDown } from '@mdi/js';
 const route = useRoute()
 const issueName = route.params.name
 const issueProcessStatus = ref();
+// const panelFirstOpen = true
+// const panelSecondOpen = true
 onMounted(() => {
   getProcessIssueStatusApi({
     issueName,
@@ -129,8 +131,9 @@ const complete = (item: any) => {
     <div class='mb-6'>
       <v-card>
         <v-expansion-panels variant='accordion'
+                            :model-value='["defaultInfo", "customInfo"]'
                             :multiple='true'>
-          <v-expansion-panel value='default-info'>
+          <v-expansion-panel value='defaultInfo'>
             <v-expansion-panel-title>详细信息</v-expansion-panel-title>
             <v-expansion-panel-text>
               <v-card :elevation='0'>
@@ -155,7 +158,7 @@ const complete = (item: any) => {
           </v-expansion-panel>
           <v-expansion-panel title='更多字段'
                              text=''
-                             value='custom-info' />
+                             value='customInfo' />
         </v-expansion-panels>
       </v-card>
     </div>

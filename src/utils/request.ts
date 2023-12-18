@@ -2,6 +2,7 @@ import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, Inte
 import axios from 'axios';
 import { ContentTypeEnum, RequestEnum } from '@/enum/http-enum';
 import Toast from './toast';
+import { useUserStore } from '@/store/modules/user';
 
 export interface RequestConfigExtra {
   token?: boolean;
@@ -21,15 +22,16 @@ const instance: AxiosInstance = axios.create({
   headers: { 'Content-Type': ContentTypeEnum.JSON },
 });
 const requestHandler = async(config: InternalAxiosRequestConfig & RequestConfigExtra): Promise<InternalAxiosRequestConfig> => {
+  const userStore = useUserStore()
   // 处理请求前的url
   //  替换url的请求前缀baseUrl
     config.baseURL = import.meta.env.VITE_APP_BASE_API_DEV;
 
-  // const token = useAuthorization()
+  const token = userStore.localToken
   //
-  // if (token.value && config.token !== false)
-  //   config.headers.set(STORAGE_AUTHORIZE_KEY, token.value)
-  //
+  if (token)
+    config.headers.set('Authorization', token)
+  
   // // 增加多语言的配置
   // const { locale } = useI18nLocale()
   // config.headers.set('Accept-Language', locale.value ?? 'zh-CN')

@@ -1,8 +1,8 @@
 import type * as Login from './types/login'
-import { useGet } from '@/utils/request'
+import { useGet, usePost } from '@/utils/request'
 /** 登录并返回 Token */
 export function loginApi(params: Login.LoginRequestData) {
-    return useGet<Login.LoginResponseData>('auth/login', params)
+    return usePost<Login.LoginResponseData>('auth/user/login', params)
 }
 
 /** 获取用户详情 */

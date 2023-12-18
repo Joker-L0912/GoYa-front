@@ -1,18 +1,16 @@
 <script lang="ts" setup>
 import { LoginRequestData } from '@/api/login/types/login'
-import { onMounted, ref, getCurrentInstance, reactive } from 'vue'
+import { onMounted, getCurrentInstance, reactive } from 'vue'
 import { useUserStore } from '@/store/modules/user'
 import { useRouter } from 'vue-router'
+import { mdiAccountCircle, mdiLock } from '@mdi/js'
 
-const username = ref('')
-const password = ref('')
 const router = useRouter()
-
 let instance: any
 
 const loginFormData: LoginRequestData = reactive({
-  username: 'admin',
-  password: '12345678',
+  username: '',
+  password: '',
 })
 onMounted(() => {
   instance = getCurrentInstance()
@@ -43,15 +41,16 @@ const handleLogin = () => {
       <v-card-text class='pa-8'>
         <v-form ref='form'>
           <v-text-field variant='underlined'
-                        v-model='username'
+                        v-model='loginFormData.username'
                         :counter='20'
                         label='账号'
-                        prepend-icon='mdi-account' />
+                        :prepend-icon='mdiAccountCircle' />
           <v-text-field variant='underlined'
-                        v-model='password'
+                        v-model='loginFormData.password'
                         :counter='20'
                         label='密码'
-                        prepend-icon='mdi-lock'
+                        :prepend-icon='mdiLock'
+                        autocomplete='off'
                         type='password' />
           <v-row class='mt-5'>
             <v-btn class='ml-5'
