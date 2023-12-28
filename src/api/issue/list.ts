@@ -3,6 +3,46 @@ import { useGet, usePost } from '@/utils/request'
 /**
  * 问题列表元素
  */
+
+/**
+ * Request
+ */
+
+export interface IssueListResonse {
+  content: IssueListItem[];
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  pageable: Pageable;
+  size: number;
+  sort: DataSort;
+  totalElements: number;
+  totalPages: number;
+}
+
+export interface Pageable {
+  offset: number;
+  paged: boolean;
+  pageNumber: number;
+  pageSize: number;
+  sort: PageableSort;
+  unpaged: boolean;
+}
+
+export interface PageableSort {
+  empty: boolean;
+  sorted: boolean;
+  unsorted: boolean;
+}
+
+export interface DataSort {
+  empty: boolean;
+  sorted: boolean;
+  unsorted: boolean;
+}
+
 export interface IssueListItem {
   'createdAt'?: string;
   'updatedAt'?: string;
@@ -111,6 +151,12 @@ export interface ProjectModule {
 export const getIssueList = async(params: any): Promise<ApiResponseData<IssueListItem[]>> => {
   return useGet<IssueListItem[]>('/issue/issue', params);
 };
+
+export const getMyTaskList = async(params: any): Promise<ApiResponseData<IssueListResonse>> => {
+  return useGet<IssueListResonse>('/issue/issue/myTask', params);
+
+}
+
 export const getIssueCount = async(params: any): Promise<ApiResponseData<number>> => {
   return useGet<number>('/issue/issue/count', params);
 };

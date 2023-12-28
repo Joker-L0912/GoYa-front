@@ -169,14 +169,4 @@ const complete = (item: any) => {
 .icon-container:hover {
   background-color: #F1F2F4;
 }
-
-.icon-action {
-  color: #0C66E4;
-}
-.status-btn{
-  background-color: #E4E4E4;
-}
-.status-btn:hover{
-  background-color: #DCDFE4;
-}
 </style>

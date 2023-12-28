@@ -1,6 +1,6 @@
 <script setup
         lang='ts'>
-import { getIssueList, IssueListItem } from '@/api/issue/list'
+import { getMyTaskList, IssueListItem } from '@/api/issue/list'
 import { getProjectList, ProjectListResponse } from '@/api/project/project'
 import CreateIssue  from '@/components/CreateIssue/index.vue'
 import router from '@/router'
@@ -16,12 +16,12 @@ const projectMenuOpen = ref<boolean>(false)
 const issueList = ref<IssueListItem[]>()
 const projectListResponse: Ref<ProjectListResponse | undefined> = ref()
 onMounted(async() => {
-  const data = await getIssueList({
+  const data = await getMyTaskList({
     pageNum: 1,
     pageSize: 3,
     projectId: userStore.getSelectProjectId,
   })
-  issueList.value = data.data
+  issueList.value = data.data.content
 })
 onMounted(async() => {
   const data = await getProjectList({
@@ -32,12 +32,12 @@ onMounted(async() => {
 })
 watch(() => userStore.getSelectProjectId,
     async() => {
-      const data = await getIssueList({
+      const data = await getMyTaskList({
         pageNum: 1,
         pageSize: 3,
         projectId: userStore.getSelectProjectId,
       })
-      issueList.value = data.data
+      issueList.value = data.data.content
     })
 const changePage = (page: string) => {
   router.push(page)
