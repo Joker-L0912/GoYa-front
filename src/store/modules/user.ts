@@ -1,21 +1,23 @@
-import store from '@/store'
-import { defineStore } from 'pinia'
 import { loginApi } from '@/api/login'
 import { type LoginRequestData } from '@/api/login/types/login'
+import { UserInfoResponseData, getUserInfoApi } from '@/api/user/user'
+import store from '@/store'
+import { defineStore } from 'pinia'
 
-interface userState{
+interface userState extends UserInfoResponseData{
     token: string,
-    roles: string[],
-    username: string,
     selectProjectId: string,
 }
 
 export const useUserStore = defineStore('userStore', {
     state: (): userState => ({
         token: '',
-        roles: [],
-        username: '',
         selectProjectId: '',
+        password: '',
+        phone: '',
+        permits: [],
+        username: '',
+        userId: 0,
     }),
     getters: {
         getSelectProjectId(): string {
@@ -30,13 +32,14 @@ export const useUserStore = defineStore('userStore', {
                 token = this.token
             } else {
                 token = window.localStorage.getItem('token') || ''
+                this.token = token
             }
             return token
         },
     },
     actions: {
         setRoles(value: string[]) {
-            this.roles = value
+            this.permits = value
         },
         setToken(value: string) {
             this.token = value
@@ -53,6 +56,14 @@ export const useUserStore = defineStore('userStore', {
         setSelectProjectId(value: string) {
             this.selectProjectId = value
             window.localStorage.setItem('selectProjectId', value)
+        },
+        async getUserInfo() {
+            const { data } = await getUserInfoApi()
+            this.username = data.username
+            this.permits = data.permits
+            this.phone = data.phone
+            this.userId = data.userId
+            this.password = data.password
         },
     },
     // /** 获取用户详情 */

@@ -1,8 +1,8 @@
+import { ContentTypeEnum, RequestEnum } from '@/enum/http-enum';
+import { useUserStore } from '@/store/modules/user';
 import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import axios from 'axios';
-import { ContentTypeEnum, RequestEnum } from '@/enum/http-enum';
 import Toast from './toast';
-import { useUserStore } from '@/store/modules/user';
 
 export interface RequestConfigExtra {
   token?: boolean;
@@ -29,7 +29,8 @@ const requestHandler = async(config: InternalAxiosRequestConfig & RequestConfigE
 
   const token = userStore.localToken
   //
-  if (token)
+  console.log(config)
+  if (token && config.url !== '/auth/user/login')
     config.headers.set('Authorization', token)
   
   // // 增加多语言的配置

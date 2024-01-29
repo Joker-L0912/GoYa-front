@@ -6,5 +6,3 @@ export interface LoginRequestData {
 }
 
 export type LoginResponseData = { token: string }
-
-export type UserInfoResponseData = ApiResponseData<{ username: string; roles: string[] }>

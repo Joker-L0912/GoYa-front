@@ -1,40 +1,24 @@
 <script setup
         lang='ts'>
-import { getProjectList, ProjectListResponse } from '@/api/project/project'
+import { getProjectList, ProjectListResponse, ProjectListItem } from '@/api/project/project'
 import { useRouter } from 'vue-router'
 // 请求项目
 import { onMounted, ref, Ref } from 'vue'
+import { mdiPencil, mdiDelete } from '@mdi/js';
 const projectListResponse: Ref<ProjectListResponse | undefined> = ref();
 const pageNum = ref(1);
 const pageSize = ref(10);
 const loading = ref(false);
 const router = useRouter()
 const headers = ref([
-  {
-    title: 'ID',
-    value: 'id',
-  }, {
-    title: '名称',
-    value: 'name',
-    sortable: false,
-  }, {
-    title: '类型',
-    value: 'type',
-    sortable: false,
-  }, {
-    title: '关键字',
-    value: 'keyword',
-    sortable: false,
-  }, {
-    title: '负责人',
-    value: 'manager',
-  },  {
-    title: '类别',
-    value: 'category',
-  }, {
-    title: '描述',
-    value: 'description',
-  }]);
+  { title: 'ID', value: 'id' },
+  { title: '名称', value: 'name', sortable: false },
+  { title: '类型', value: 'type', sortable: false },
+  { title: '关键字', value: 'keyword', sortable: false },
+  { title: '负责人', value: 'manager' },
+  { title: '类别', value: 'category' },
+  { title: '描述', value: 'description' },
+  { title: 'Actions', key: 'actions', sortable: false }]);
 const updatePage = async() => {
   if (loading.value === true) return;
   loading.value = true;
@@ -55,6 +39,10 @@ onMounted(async() => {
   });
   projectListResponse.value = data.data;
 });
+
+const toEdit = (item: ProjectListItem) => {
+  console.log(item.name);
+}
 </script>
 
 <template>
@@ -73,6 +61,14 @@ onMounted(async() => {
                @click='router.push(`/project/${item.id}/issue/list`)'>
             {{ item.name }}
           </div>
+        </template>
+        <template #item.actions='{item}'>
+          <v-icon size='small'
+                  class='me-2'
+                  :icon='mdiPencil'
+                  @click='toEdit(item)' />
+          <v-icon size='small'
+                  :icon='mdiDelete' />
         </template>
         <template #bottom>
           <div class='text-center pt-2'>

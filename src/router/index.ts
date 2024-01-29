@@ -27,6 +27,10 @@ const routes: RouteRecordRaw[] = [
                         component: () => import('@/views/Project/index.vue'),
                         children: [
                             {
+                                path: 'setting',
+                                component: () => import('@/views/Project/setting.vue'),
+                            },
+                            {
                                 path: 'issue',
                                 component: () => import('@/views/Issue/index.vue'),
                                 meta: { title: '一级菜单1' },

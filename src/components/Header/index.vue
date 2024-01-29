@@ -2,12 +2,12 @@
         lang='ts'>
 import { getMyTaskList, IssueListItem } from '@/api/issue/list'
 import { getProjectList, ProjectListResponse } from '@/api/project/project'
-import CreateIssue  from '@/components/CreateIssue/index.vue'
+import CreateIssue from '@/components/CreateIssue/index.vue'
 import router from '@/router'
 import { useUserStore } from '@/store/modules/user'
+import { mdiChevronDown, mdiCogOutline } from '@mdi/js'
 import { onMounted, ref, watch } from 'vue'
 import { Ref } from 'vue/dist/vue'
-import { mdiChevronDown } from '@mdi/js'
 
 const userStore = useUserStore()
 const tab = ref<string>('toMe')
@@ -30,6 +30,9 @@ onMounted(async() => {
   })
   projectListResponse.value = data.data
 })
+onMounted(async() => {
+  userStore.getUserInfo()
+})
 watch(() => userStore.getSelectProjectId,
     async() => {
       const data = await getMyTaskList({
@@ -43,6 +46,14 @@ const changePage = (page: string) => {
   router.push(page)
   workMenuOpen.value = false
   projectMenuOpen.value = false
+}
+function generateColorFromUsername(username: string) {
+  let hash = 0;
+  for (let i = 0; i < username.length; i++) {
+    hash = username.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const color = Math.abs(hash).toString(16).substring(0, 6); // 取哈希值的前6位
+  return '#' + '0'.repeat(6 - color.length) + color; // 将颜色代码补齐为6位
 }
 </script>
 
@@ -87,12 +98,12 @@ const changePage = (page: string) => {
                   <v-list lines='one'
                           min-width='300px'
                           max-width='400px'>
-                    <v-list-item v-for='item in issueList'
+                    <v-list-item v-for='item in issueList' 
                                  :key='item.name'
                                  :title='item.gist'
                                  :subtitle='item.projectName'
                                  class='py-3'
-                                 @click='changePage( `/project/${userStore.getSelectProjectId}/issue/${item.name}`)'
+                                 @click='changePage(`/project/${userStore.getSelectProjectId}/issue/${item.name}`)'
                                  style='cursor: pointer'>
                       <template #prepend>
                         <div class='mr-3'>
@@ -247,6 +258,21 @@ const changePage = (page: string) => {
           </v-menu>
         </div>
         <CreateIssue />
+      </v-sheet>
+      <v-spacer />
+      <!-- Header 右侧-->
+      <v-sheet height='100'
+               class='d-flex align-center bg-transparent mr-4'>
+        <v-sheet class='bg-transparent'>
+          <v-btn :icon='mdiCogOutline' />
+        </v-sheet>
+        <v-sheet class='bg-transparent'>
+          <v-avatar size='35'
+                    :color='generateColorFromUsername(userStore.username)'
+                    rounded='17'>
+            <span>{{ userStore.username?.charAt(0)?.toUpperCase() }}</span>
+          </v-avatar>
+        </v-sheet>
       </v-sheet>
     </v-toolbar>
   </v-app-bar>
