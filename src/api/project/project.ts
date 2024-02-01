@@ -1,4 +1,4 @@
-import { useGet } from '@/utils/request'
+import { useGet } from '@/utils/request';
 
 /**
  * Request
@@ -19,18 +19,16 @@ export interface ProjectListResponse {
 }
 
 export interface ProjectListItem {
-    category: string;
+    category: ProjectCategory;
     createdAt: string;
     createdBy: string;
-    description: null | string;
-    icon: null | string;
+    description: string;
     id: number;
     issueCount: number;
     keyword: string;
-    manager: null | string;
+    manager: string;
     name: string;
-    status: null | string;
-    type: string;
+    type: ProjectType;
     updatedAt: string;
     updatedBy: string;
 }
@@ -56,6 +54,38 @@ export interface DataSort {
     unsorted: boolean;
 }
 
+export interface ProjectCategory {
+    createdAt: string;
+    createdBy: string;
+    id: number;
+    name: string;
+    updatedAt: string;
+    updatedBy: string;
+    [property: string]: any;
+}
+
+export interface ProjectType {
+    createdAt: string;
+    createdBy: string;
+    id: number;
+    name: string;
+    updatedAt: string;
+    updatedBy: string;
+    [property: string]: any;
+}
+
 export const getProjectList = async(params: any): Promise<ApiResponseData<ProjectListResponse>> => {
     return useGet<ProjectListResponse>('/issue/project/list', params);
+}
+
+export const getProjectById = async(projectId: number): Promise<ApiResponseData<ProjectListItem>> => {
+    return useGet<ProjectListItem>(`issue/project/${projectId}`);
+}
+
+export const getAllProjectCategory = async(): Promise<ApiResponseData<ProjectCategory[]>> => {
+    return useGet<ProjectCategory[]>('/issue/projectCategory/list');
+}
+
+export const getAllProjectType = async(): Promise<ApiResponseData<ProjectType[]>> => {
+    return useGet<ProjectType[]>('/issue/projectType/list');
 }

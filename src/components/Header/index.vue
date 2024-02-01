@@ -5,7 +5,7 @@ import { getProjectList, ProjectListResponse } from '@/api/project/project'
 import CreateIssue from '@/components/CreateIssue/index.vue'
 import router from '@/router'
 import { useUserStore } from '@/store/modules/user'
-import { mdiChevronDown, mdiCogOutline } from '@mdi/js'
+import { mdiChevronDown } from '@mdi/js'
 import { onMounted, ref, watch } from 'vue'
 import { Ref } from 'vue/dist/vue'
 
@@ -263,9 +263,6 @@ function generateColorFromUsername(username: string) {
       <!-- Header 右侧-->
       <v-sheet height='100'
                class='d-flex align-center bg-transparent mr-4'>
-        <v-sheet class='bg-transparent'>
-          <v-btn :icon='mdiCogOutline' />
-        </v-sheet>
         <v-sheet class='bg-transparent'>
           <v-avatar size='35'
                     :color='generateColorFromUsername(userStore.username)'

@@ -1,10 +1,10 @@
 <script setup
         lang='ts'>
-import { getProjectList, ProjectListResponse, ProjectListItem } from '@/api/project/project'
-import { useRouter } from 'vue-router'
+import { getProjectList, ProjectListItem, ProjectListResponse } from '@/api/project/project';
+import { useRouter } from 'vue-router';
 // 请求项目
-import { onMounted, ref, Ref } from 'vue'
-import { mdiPencil, mdiDelete } from '@mdi/js';
+import { mdiDelete, mdiPencil } from '@mdi/js';
+import { onMounted, ref, Ref } from 'vue';
 const projectListResponse: Ref<ProjectListResponse | undefined> = ref();
 const pageNum = ref(1);
 const pageSize = ref(10);
@@ -13,10 +13,10 @@ const router = useRouter()
 const headers = ref([
   { title: 'ID', value: 'id' },
   { title: '名称', value: 'name', sortable: false },
-  { title: '类型', value: 'type', sortable: false },
+  { title: '类型', value: 'type.name', sortable: false },
   { title: '关键字', value: 'keyword', sortable: false },
   { title: '负责人', value: 'manager' },
-  { title: '类别', value: 'category' },
+  { title: '类别', value: 'category.name' },
   { title: '描述', value: 'description' },
   { title: 'Actions', key: 'actions', sortable: false }]);
 const updatePage = async() => {
@@ -40,8 +40,9 @@ onMounted(async() => {
   projectListResponse.value = data.data;
 });
 
-const toEdit = (item: ProjectListItem) => {
-  console.log(item.name);
+const toSetting = (item: ProjectListItem) => {
+  console.log(item.id);
+  router.push(`/project/${item.id}/setting`)
 }
 </script>
 
@@ -66,7 +67,7 @@ const toEdit = (item: ProjectListItem) => {
           <v-icon size='small'
                   class='me-2'
                   :icon='mdiPencil'
-                  @click='toEdit(item)' />
+                  @click='toSetting(item)' />
           <v-icon size='small'
                   :icon='mdiDelete' />
         </template>

@@ -1,6 +1,6 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import type { RouteRecordRaw } from 'vue-router'
 import { useUserStore } from '@/store/modules/user'
+import type { RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 
 const routes: RouteRecordRaw[] = [
     {
@@ -16,6 +16,7 @@ const routes: RouteRecordRaw[] = [
             }, {
                 path: '/project',
                 meta: { title: '项目' },
+                redirect: '/project/list',
                 children: [
                     {
                         path: 'list',
@@ -29,6 +30,26 @@ const routes: RouteRecordRaw[] = [
                             {
                                 path: 'setting',
                                 component: () => import('@/views/Project/setting.vue'),
+                                redirect: to => {
+                                    return `/project/${to.params.projectId}/setting/info`
+                                },
+                                children: [
+                                    {
+                                        path: 'info',
+                                        component: () => import('@/views/Project/info.vue'),
+                                        meta: { title: '项目设置' },
+                                    },
+                                    {
+                                        path: 'member',
+                                        component: () => import('@/views/Project/member.vue'),
+                                        meta: { title: '项目成员' },
+                                    },
+                                    {
+                                        path: 'permission',
+                                        component: () => import('@/views/Project/permission.vue'),
+                                        meta: { title: '权限' },
+                                    },
+                                ],
                             },
                             {
                                 path: 'issue',

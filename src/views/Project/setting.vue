@@ -4,19 +4,19 @@ import { ref } from 'vue';
 
 const itemList = ref([
   {
-    name: 'list',
-    path: '/issue/list',
-    title: '列表',
+    name: 'info',
+    path: 'info',
+    title: '详情信息',
   },
   {
-    name: 'dashboard',
-    path: '/issue/dashboard',
-    title: '测试2',
+    name: 'member',
+    path: 'member',
+    title: '成员',
   },
   {
-    name: 'test',
-    path: '/issue/detail',
-    title: '测试3',
+    name: 'permission',
+    path: 'permission',
+    title: '权限',
   },
 ])
 </script>
@@ -36,6 +36,7 @@ const itemList = ref([
       </v-list-item>
     </v-list>
   </v-navigation-drawer>
+  <router-view />
 </template>
 
 <style scoped>
