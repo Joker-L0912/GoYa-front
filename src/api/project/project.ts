@@ -1,4 +1,4 @@
-import { useGet } from '@/utils/request';
+import { useGet, usePut } from '@/utils/request';
 
 /**
  * Request
@@ -88,4 +88,8 @@ export const getAllProjectCategory = async(): Promise<ApiResponseData<ProjectCat
 
 export const getAllProjectType = async(): Promise<ApiResponseData<ProjectType[]>> => {
     return useGet<ProjectType[]>('/issue/projectType/list');
+}
+
+export const updateProjectApi = async(project: ProjectListItem): Promise<ApiResponseData<ProjectListItem>> => {
+    return usePut<ProjectListItem>('issue/project', project);
 }

@@ -1,6 +1,6 @@
 <script setup
         lang='ts'>
-import { ProjectCategory, ProjectListItem, ProjectType, getAllProjectCategory, getAllProjectType, getProjectById } from '@/api/project/project';
+import { ProjectCategory, ProjectListItem, ProjectType, getAllProjectCategory, getAllProjectType, getProjectById, updateProjectApi } from '@/api/project/project';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { VSelect } from 'vuetify/lib/components/index.mjs';
@@ -24,6 +24,18 @@ onMounted(async() => {
   projectTypeList.value = data
 
 })
+
+const getItemValue = (item: any) => {
+  return item
+};
+
+const updateProject = async() => {
+  console.log(projectInfo.value)
+  if (projectInfo.value) {
+    const { data } = await updateProjectApi(projectInfo.value)
+    projectInfo.value = data
+  }
+}
 </script>
 
 <template>
@@ -46,23 +58,21 @@ onMounted(async() => {
       <v-row :no-gutters='true'>
         <v-col cols='4'
                offset='4'>
-          <v-select v-model='projectInfo.category.name'
+          <v-select v-model='projectInfo.category'
                     :items='projectCategoryList'
                     item-title='name' 
-                    item-value='id' 
-                    label='项目类别'
-                    disabled />
+                    :item-value='getItemValue'
+                    label='项目类别' />
         </v-col>
       </v-row>
       <v-row :no-gutters='true'>
         <v-col cols='4'
                offset='4'>
-          <v-select v-model='projectInfo.type.name'
+          <v-select v-model='projectInfo.type'
                     :items='projectTypeList'
                     item-title='name'
-                    item-value='id'
-                    label='项目类型' 
-                    disabled />
+                    :item-value='getItemValue'
+                    label='项目类型' />
         </v-col>
       </v-row>
       <v-row :no-gutters='true'>
@@ -83,7 +93,7 @@ onMounted(async() => {
         <v-col class='d-flex justify-space-between' 
                offset='4'
                cols='1'>
-          <v-btn>
+          <v-btn @click='updateProject'>
             保存
           </v-btn>
           <v-btn>
